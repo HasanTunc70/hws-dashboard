@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HWS Dökümhane | Canlı Ekran</title>
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Şık ve okunabilir bir font) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -109,7 +109,7 @@
     </div>
 
     <script>
-        // Sizin Firebase URL'niz (Kuralı açık yaptığımız için doğrudan okuyabiliriz)
+        // Az önce oluşturduğunuz güncel Firebase URL'si
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
 
         function updateDashboard() {
@@ -126,22 +126,24 @@
 
                         // Model A Verileri
                         if(data.modelA) {
-                            document.getElementById('a-isim').innerText = `[${data.modelA.kalipNo}] ${data.modelA.parcaAdi}`;
-                            document.getElementById('a-hedef').innerText = data.modelA.hedef;
-                            document.getElementById('a-kalip').innerText = data.modelA.kaliplanan;
-                            document.getElementById('a-dokum').innerText = data.modelA.dokulen;
-                            // Fire = Boş + Hatalı Döküm + Hatalı Kalıp
-                            let fireA = parseInt(data.modelA.bos) + parseInt(data.modelA.hataliDokum) + parseInt(data.modelA.hataliKalip);
+                            document.getElementById('a-isim').innerText = `[${data.modelA.kalipNo || '-'}] ${data.modelA.parcaAdi || '-'}`;
+                            document.getElementById('a-hedef').innerText = data.modelA.hedef || 0;
+                            document.getElementById('a-kalip').innerText = data.modelA.kaliplanan || 0;
+                            document.getElementById('a-dokum').innerText = data.modelA.dokulen || 0;
+                            
+                            // Fire = Boşaltılan (Boş) + Hatalı Döküm + Hatalı Kalıp
+                            let fireA = parseInt(data.modelA.bos || 0) + parseInt(data.modelA.hataliDokum || 0) + parseInt(data.modelA.hataliKalip || 0);
                             document.getElementById('a-fire').innerText = fireA;
                         }
 
                         // Model B Verileri
                         if(data.modelB) {
-                            document.getElementById('b-isim').innerText = `[${data.modelB.kalipNo}] ${data.modelB.parcaAdi}`;
-                            document.getElementById('b-hedef').innerText = data.modelB.hedef;
-                            document.getElementById('b-kalip').innerText = data.modelB.kaliplanan;
-                            document.getElementById('b-dokum').innerText = data.modelB.dokulen;
-                            let fireB = parseInt(data.modelB.bos) + parseInt(data.modelB.hataliDokum) + parseInt(data.modelB.hataliKalip);
+                            document.getElementById('b-isim').innerText = `[${data.modelB.kalipNo || '-'}] ${data.modelB.parcaAdi || '-'}`;
+                            document.getElementById('b-hedef').innerText = data.modelB.hedef || 0;
+                            document.getElementById('b-kalip').innerText = data.modelB.kaliplanan || 0;
+                            document.getElementById('b-dokum').innerText = data.modelB.dokulen || 0;
+                            
+                            let fireB = parseInt(data.modelB.bos || 0) + parseInt(data.modelB.hataliDokum || 0) + parseInt(data.modelB.hataliKalip || 0);
                             document.getElementById('b-fire').innerText = fireB;
                         }
                     }
