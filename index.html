@@ -1,432 +1,159 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HWS Döküm Dashboard</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f1117;
-      color: #e0e0e0;
-      min-height: 100vh;
-    }
-
-    /* HEADER */
-    .header {
-      background: linear-gradient(135deg, #1a1f2e, #242938);
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #2d3548;
-    }
-    .header h1 {
-      font-size: 1.4rem;
-      color: #fff;
-      letter-spacing: 1px;
-    }
-    .header h1 span {
-      color: #4fc3f7;
-    }
-
-    /* DURUM BADGE */
-    .durum-badge {
-      padding: 8px 20px;
-      border-radius: 30px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-      transition: all 0.4s;
-    }
-    .durum-CALISIYOR { background: #1b5e20; color: #69f0ae; border: 2px solid #69f0ae; }
-    .durum-DURDU     { background: #b71c1c; color: #ff8a80; border: 2px solid #ff8a80; }
-    .durum-BEKLIYOR  { background: #e65100; color: #ffcc80; border: 2px solid #ffcc80; }
-
-    /* ZAMAN */
-    .zaman-bar {
-      background: #1a1f2e;
-      padding: 8px 24px;
-      display: flex;
-      gap: 24px;
-      font-size: 0.82rem;
-      color: #90a4ae;
-      border-bottom: 1px solid #2d3548;
-    }
-    .zaman-bar span b { color: #b0bec5; }
-
-    /* GRID */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 16px;
-      padding: 20px 24px;
-    }
-
-    /* KART */
-    .kart {
-      background: #1a1f2e;
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid #2d3548;
-      transition: transform 0.2s;
-    }
-    .kart:hover { transform: translateY(-2px); }
-
-    .kart-baslik {
-      font-size: 0.75rem;
-      color: #78909c;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-    .kart-deger {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #e0e0e0;
-      line-height: 1;
-    }
-    .kart-alt {
-      font-size: 0.78rem;
-      color: #546e7a;
-      margin-top: 6px;
-    }
-
-    /* RENK TEMALARI */
-    .tema-mavi  { border-top: 3px solid #4fc3f7; }
-    .tema-yesil { border-top: 3px solid #69f0ae; }
-    .tema-kirmizi { border-top: 3px solid #ff5252; }
-    .tema-turuncu { border-top: 3px solid #ffab40; }
-    .tema-mor   { border-top: 3px solid #ce93d8; }
-    .tema-gri   { border-top: 3px solid #90a4ae; }
-
-    .kart-deger.mavi    { color: #4fc3f7; }
-    .kart-deger.yesil   { color: #69f0ae; }
-    .kart-deger.kirmizi { color: #ff5252; }
-    .kart-deger.turuncu { color: #ffab40; }
-    .kart-deger.mor     { color: #ce93d8; }
-
-    /* BÖLÜM BAŞLIĞI */
-    .bolum {
-      padding: 8px 24px 0;
-      font-size: 0.78rem;
-      color: #546e7a;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    /* MODEL KARTI */
-    .model-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      padding: 0 24px;
-    }
-    .model-kart {
-      background: #1a1f2e;
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid #2d3548;
-    }
-    .model-kart.a { border-top: 3px solid #4fc3f7; }
-    .model-kart.b { border-top: 3px solid #ce93d8; }
-    .model-no {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #fff;
-    }
-    .model-kod {
-      font-size: 0.8rem;
-      color: #78909c;
-      margin: 4px 0;
-    }
-    .model-ad {
-      font-size: 1rem;
-      color: #b0bec5;
-      margin-bottom: 12px;
-    }
-    .model-satir {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      color: #78909c;
-      margin-top: 6px;
-    }
-    .model-satir b { color: #e0e0e0; }
-
-    /* PROGRESS */
-    .progress-bar {
-      height: 6px;
-      background: #2d3548;
-      border-radius: 3px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-    .progress-ic {
-      height: 100%;
-      border-radius: 3px;
-      transition: width 0.5s;
-    }
-    .progress-ic.mavi    { background: #4fc3f7; }
-    .progress-ic.kirmizi { background: #ff5252; }
-
-    /* FOOTER */
-    .footer {
-      padding: 16px 24px;
-      text-align: center;
-      font-size: 0.75rem;
-      color: #37474f;
-      border-top: 1px solid #1a1f2e;
-      margin-top: 20px;
-    }
-
-    /* BAĞLANTI DURUMU */
-    .baglanti {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 6px;
-    }
-    .baglanti.aktif  { background: #69f0ae; box-shadow: 0 0 6px #69f0ae; }
-    .baglanti.pasif  { background: #ff5252; }
-
-    @media (max-width: 600px) {
-      .model-grid { grid-template-columns: 1fr; }
-      .grid { grid-template-columns: 1fr 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HWS Dökümhane | Canlı Ekran</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #1e293b; padding-bottom: 15px; }
+        .header h1 { color: #38bdf8; font-size: 24px; font-weight: 800; letter-spacing: 1px; }
+        .status { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: #10b981; }
+        .dot { width: 10px; height: 10px; background-color: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        
+        .card { background-color: #1e293b; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-top: 4px solid #3b82f6; }
+        .card.model-b { border-top-color: #8b5cf6; }
+        
+        .card-title { font-size: 20px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; }
+        .card-subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 20px; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .stat-box { background-color: #0f172a; padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .stat-value { font-size: 28px; font-weight: 800; color: #f8fafc; }
+        
+        .value-hedef { color: #38bdf8; }
+        .value-kalip { color: #10b981; }
+        .value-dokum { color: #f59e0b; }
+        .value-hata { color: #ef4444; }
+        
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #64748b; }
+        .last-update { font-weight: 600; color: #94a3b8; }
+        
+        /* Loading efekti */
+        .loading { text-align: center; padding: 50px; font-size: 18px; color: #94a3b8; }
+        #dashboard { display: none; }
+    </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <h1>🏭 HWS <span>Döküm</span> Dashboard</h1>
-  <div id="durum-badge" class="durum-badge durum-BEKLIYOR">● YÜKLENIYOR</div>
-</div>
-
-<!-- ZAMAN BARI -->
-<div class="zaman-bar">
-  <span><span class="baglanti aktif" id="baglanti-dot"></span><b id="guncelleme">--:--:--</b></span>
-  <span>📅 <b id="tarih">-</b></span>
-  <span>⏰ <b id="vardiya-ad">-</b></span>
-  <span>🕐 <b id="vardiya-saat">-</b></span>
-</div>
-
-<!-- VARDIYA SAYAÇLARI -->
-<p class="bolum" style="margin-top:16px;">⚡ Vardiya Sayaçları</p>
-<div class="grid">
-  <div class="kart tema-mavi">
-    <div class="kart-baslik">Saykil</div>
-    <div class="kart-deger mavi" id="v-saykil">-</div>
-    <div class="kart-alt">Bu vardiya toplam çevrim</div>
-  </div>
-  <div class="kart tema-yesil">
-    <div class="kart-baslik">Döküm</div>
-    <div class="kart-deger yesil" id="v-dokum">-</div>
-    <div class="kart-alt">Dökülen kalıp sayısı</div>
-  </div>
-  <div class="kart tema-kirmizi">
-    <div class="kart-baslik">Fire Kalıp</div>
-    <div class="kart-deger kirmizi" id="v-fire">-</div>
-    <div class="kart-alt" id="fire-oran-alt">Oran: %0</div>
-  </div>
-  <div class="kart tema-turuncu">
-    <div class="kart-baslik">Fire Oranı</div>
-    <div class="kart-deger turuncu" id="fire-oran">%0</div>
-    <div class="kart-alt">Vardiya fire %</div>
-  </div>
-</div>
-
-<!-- HAT DURUMU -->
-<p class="bolum">🏗️ Hat Durumu</p>
-<div class="grid">
-  <div class="kart tema-gri">
-    <div class="kart-baslik">Boş Kalıp</div>
-    <div class="kart-deger" id="bos-kalip">-</div>
-    <div class="kart-alt">Hattaki boş kalıp sayısı</div>
-  </div>
-  <div class="kart tema-mor">
-    <div class="kart-baslik">Dolu Kalıp</div>
-    <div class="kart-deger mor" id="dolu-kalip">-</div>
-    <div class="kart-alt">Hattaki dolu kalıp sayısı</div>
-  </div>
-</div>
-
-<!-- TOPLAM SAYAÇLAR -->
-<p class="bolum">📈 Toplam Sayaçlar</p>
-<div class="grid">
-  <div class="kart tema-mavi">
-    <div class="kart-baslik">Toplam Saykil</div>
-    <div class="kart-deger" id="t-saykil">-</div>
-    <div class="kart-alt">Kümülatif</div>
-  </div>
-  <div class="kart tema-yesil">
-    <div class="kart-baslik">Toplam Döküm</div>
-    <div class="kart-deger" id="t-dokum">-</div>
-    <div class="kart-alt">Kümülatif</div>
-  </div>
-  <div class="kart tema-kirmizi">
-    <div class="kart-baslik">Toplam Fire</div>
-    <div class="kart-deger" id="t-fire">-</div>
-    <div class="kart-alt">Kümülatif</div>
-  </div>
-  <div class="kart tema-gri">
-    <div class="kart-baslik">AuslSeq</div>
-    <div class="kart-deger" id="t-ausl">-</div>
-    <div class="kart-alt">Çıkış sayacı</div>
-  </div>
-</div>
-
-<!-- MODELLER -->
-<p class="bolum">🔩 Aktif Modeller</p>
-<div class="model-grid" style="margin-bottom:20px;">
-
-  <!-- MODEL A -->
-  <div class="model-kart a">
-    <div style="color:#4fc3f7;font-size:0.75rem;margin-bottom:8px;">◆ SIRA 1 — AKTİF</div>
-    <div class="model-no" id="ma-no">-</div>
-    <div class="model-kod" id="ma-kod">-</div>
-    <div class="model-ad" id="ma-ad">-</div>
-    <div class="model-satir">
-      <span>Kalıpta Parça</span>
-      <b id="ma-kalipta">0</b>
+    <div class="header">
+        <h1>HWS DÖKÜMHANE</h1>
+        <div class="status"><div class="dot"></div> CANLI VERİ</div>
     </div>
-    <div class="model-satir">
-      <span>Hedef</span>
-      <b id="ma-hedef">0</b>
+
+    <div id="loading" class="loading">Sisteme bağlanılıyor, veriler yükleniyor...</div>
+
+    <div id="dashboard" class="grid-container">
+        <!-- Model A -->
+        <div class="card">
+            <div class="card-title">MODEL A <span style="font-size: 14px; color:#94a3b8;">(Hat 1)</span></div>
+            <div class="card-subtitle" id="a-isim">-</div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">HEDEF</div>
+                    <div class="stat-value value-hedef" id="a-hedef">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">KALIPLANAN</div>
+                    <div class="stat-value value-kalip" id="a-kalip">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">DÖKÜLEN</div>
+                    <div class="stat-value value-dokum" id="a-dokum">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">BOŞ / FİRE</div>
+                    <div class="stat-value value-hata" id="a-fire">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model B -->
+        <div class="card model-b">
+            <div class="card-title">MODEL B <span style="font-size: 14px; color:#94a3b8;">(Hat 2)</span></div>
+            <div class="card-subtitle" id="b-isim">-</div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">HEDEF</div>
+                    <div class="stat-value value-hedef" id="b-hedef">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">KALIPLANAN</div>
+                    <div class="stat-value value-kalip" id="b-kalip">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">DÖKÜLEN</div>
+                    <div class="stat-value value-dokum" id="b-dokum">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">BOŞ / FİRE</div>
+                    <div class="stat-value value-hata" id="b-fire">0</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="model-satir">
-      <span>Sıra No</span>
-      <b id="ma-pos">-</b>
+
+    <div class="footer">
+        Son Güncelleme: <span id="last-update" class="last-update">Bekleniyor...</span>
     </div>
-    <div class="progress-bar">
-      <div class="progress-ic mavi" id="ma-progress" style="width:0%"></div>
-    </div>
-  </div>
 
-  <!-- MODEL B -->
-  <div class="model-kart b">
-    <div style="color:#ce93d8;font-size:0.75rem;margin-bottom:8px;">◆ SIRA 2 — BEKLEYEN</div>
-    <div class="model-no" id="mb-no">-</div>
-    <div class="model-kod" id="mb-kod">-</div>
-    <div class="model-ad" id="mb-ad">-</div>
-    <div class="model-satir">
-      <span>Kalıpta Parça</span>
-      <b id="mb-kalipta">0</b>
-    </div>
-    <div class="model-satir">
-      <span>Hedef</span>
-      <b id="mb-hedef">0</b>
-    </div>
-    <div class="model-satir">
-      <span>Sıra No</span>
-      <b id="mb-pos">-</b>
-    </div>
-    <div class="progress-bar">
-      <div class="progress-ic kirmizi" id="mb-progress" style="width:0%"></div>
-    </div>
-  </div>
-</div>
+    <script>
+        // Sizin Firebase URL'niz (Kuralı açık yaptığımız için doğrudan okuyabiliriz)
+        const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
 
-<!-- FOOTER -->
-<div class="footer">
-  HWS Döküm Takip Sistemi &nbsp;|&nbsp;
-  <span id="son-guncelleme">Bekleniyor...</span>
-</div>
+        function updateDashboard() {
+            fetch(FIREBASE_URL)
+                .then(response => response.json())
+                .then(data => {
+                    if(data) {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('dashboard').style.display = 'grid';
 
-<!-- FİREBASE + JS -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+                        // Zamanı Güncelle
+                        const now = new Date();
+                        document.getElementById('last-update').innerText = now.toLocaleTimeString('tr-TR');
 
-  const firebaseConfig = {
-    apiKey: "FIREBASE_API_KEY",
-    authDomain: "hws-dokumhane.firebaseapp.com",
-    databaseURL: "https://hws-dokumhane-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "hws-dokumhane",
-    storageBucket: "hws-dokumhane.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID"
-  };
+                        // Model A Verileri
+                        if(data.modelA) {
+                            document.getElementById('a-isim').innerText = `[${data.modelA.kalipNo}] ${data.modelA.parcaAdi}`;
+                            document.getElementById('a-hedef').innerText = data.modelA.hedef;
+                            document.getElementById('a-kalip').innerText = data.modelA.kaliplanan;
+                            document.getElementById('a-dokum').innerText = data.modelA.dokulen;
+                            // Fire = Boş + Hatalı Döküm + Hatalı Kalıp
+                            let fireA = parseInt(data.modelA.bos) + parseInt(data.modelA.hataliDokum) + parseInt(data.modelA.hataliKalip);
+                            document.getElementById('a-fire').innerText = fireA;
+                        }
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
+                        // Model B Verileri
+                        if(data.modelB) {
+                            document.getElementById('b-isim').innerText = `[${data.modelB.kalipNo}] ${data.modelB.parcaAdi}`;
+                            document.getElementById('b-hedef').innerText = data.modelB.hedef;
+                            document.getElementById('b-kalip').innerText = data.modelB.kaliplanan;
+                            document.getElementById('b-dokum').innerText = data.modelB.dokulen;
+                            let fireB = parseInt(data.modelB.bos) + parseInt(data.modelB.hataliDokum) + parseInt(data.modelB.hataliKalip);
+                            document.getElementById('b-fire').innerText = fireB;
+                        }
+                    }
+                })
+                .catch(err => console.log("Veri çekme hatası:", err));
+        }
 
-  function id(x) { return document.getElementById(x); }
-
-  function guncelle(v) {
-    if (!v) return;
-
-    // Durum badge
-    const badge = id("durum-badge");
-    badge.textContent = "● " + v.durum;
-    badge.className = "durum-badge durum-" + v.durum;
-
-    // Zaman
-    id("guncelleme").textContent  = v.guncelleme     || "-";
-    id("tarih").textContent       = v.tarih           || "-";
-    id("vardiya-ad").textContent  = v.vardiya_ad      || "-";
-    id("vardiya-saat").textContent =
-      (v.vardiya_baslangic || "") + " - " + (v.vardiya_bitis || "");
-
-    // Vardiya sayaçları
-    id("v-saykil").textContent = (v.v_saykil      ?? "-");
-    id("v-dokum").textContent  = (v.v_dokum        ?? "-");
-    id("v-fire").textContent   = (v.v_fire_kalip   ?? "-");
-    id("fire-oran").textContent = "%" + (v.fire_oran ?? 0);
-    id("fire-oran-alt").textContent = "Oran: %" + (v.fire_oran ?? 0);
-
-    // Hat
-    id("bos-kalip").textContent  = (v.anlik_bos_kalip  ?? "-");
-    id("dolu-kalip").textContent = (v.anlik_dolu_kalip ?? "-");
-
-    // Toplam
-    id("t-saykil").textContent = (v.toplam_saykil      ?? "-");
-    id("t-dokum").textContent  = (v.toplam_dokum        ?? "-");
-    id("t-fire").textContent   = (v.toplam_fire_kalip   ?? "-");
-    id("t-ausl").textContent   = (v.toplam_auslseq      ?? "-");
-
-    // Model A
-    id("ma-no").textContent      = v.model_a       || "-";
-    id("ma-kod").textContent     = v.parca_a_kodu  || "-";
-    id("ma-ad").textContent      = v.parca_a_adi   || "-";
-    id("ma-kalipta").textContent = v.kalipta_a     ?? 0;
-    id("ma-hedef").textContent   = v.hedef_a       ?? 0;
-    id("ma-pos").textContent     = "#" + (v.pos_a  ?? "-");
-
-    const maProgress = v.hedef_a > 0
-      ? Math.min(100, Math.round((v.v_saykil / v.hedef_a) * 100))
-      : 0;
-    id("ma-progress").style.width = maProgress + "%";
-
-    // Model B
-    id("mb-no").textContent      = v.model_b       || "-";
-    id("mb-kod").textContent     = v.parca_b_kodu  || "-";
-    id("mb-ad").textContent      = v.parca_b_adi   || "-";
-    id("mb-kalipta").textContent = v.kalipta_b     ?? 0;
-    id("mb-hedef").textContent   = v.hedef_b       ?? 0;
-    id("mb-pos").textContent     = "#" + (v.pos_b  ?? "-");
-
-    // Bağlantı
-    id("baglanti-dot").className = "baglanti aktif";
-    id("son-guncelleme").textContent =
-      "Son güncelleme: " + (v.guncelleme_tam || "-");
-  }
-
-  // Firebase dinleme
-  const canliRef = ref(db, "canli");
-  onValue(canliRef, (snapshot) => {
-    const veri = snapshot.val();
-    guncelle(veri);
-  }, (hata) => {
-    console.error("Firebase hata:", hata);
-    id("baglanti-dot").className = "baglanti pasif";
-  });
-</script>
-
+        // Sayfa açıldığında hemen veriyi çek
+        updateDashboard();
+        
+        // Sonra her 10 saniyede bir otomatik güncelle (sayfayı yenilemeden)
+        setInterval(updateDashboard, 10000);
+    </script>
 </body>
 </html>
