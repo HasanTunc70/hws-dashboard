@@ -20,11 +20,13 @@
         
         .card { background-color: #1e293b; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
         
-        .card.model-a { border-top: 4px solid #f59e0b; }
-        .card.model-a .badge { background-color: #f59e0b; color: #fff; }
+        /* Model A (Aktif Dökülen) - Yeşil Tema */
+        .card.model-a { border-top: 4px solid #10b981; }
+        .card.model-a .badge { background-color: #10b981; color: #fff; }
         
-        .card.model-b { border-top: 4px solid #10b981; }
-        .card.model-b .badge { background-color: #10b981; color: #fff; }
+        /* Model B (Sıradaki) - Turuncu Tema */
+        .card.model-b { border-top: 4px solid #f59e0b; }
+        .card.model-b .badge { background-color: #f59e0b; color: #fff; }
         
         .badge { position: absolute; top: 20px; right: 20px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
         
@@ -58,11 +60,38 @@
     <div id="loading" class="loading">Sisteme bağlanılıyor, veriler yükleniyor...</div>
 
     <div id="dashboard" class="grid-container">
-        <!-- Model B (Şu An Dökülen) -->
-        <div class="card model-b">
+        
+        <!-- Model A (Şu An Dökülen - Başa aldık) -->
+        <div class="card model-a">
             <div class="badge">ŞU AN DÖKÜLEN</div>
-            <div class="card-title">AKTİF MODEL</div>
-            <div class="card-subtitle" id="b-isim">-</div>
+            <div class="card-title" id="a-isim">-</div>
+            <div class="card-subtitle" id="a-kod">-</div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">HEDEF</div>
+                    <div class="stat-value value-hedef" id="a-hedef">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">KALIPLANAN</div>
+                    <div class="stat-value value-kalip" id="a-kalip">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">DÖKÜLEN</div>
+                    <div class="stat-value value-dokum" id="a-dokum">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">BOŞ / FİRE</div>
+                    <div class="stat-value value-hata" id="a-fire">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model B (Sıradaki Model) -->
+        <div class="card model-b">
+            <div class="badge">SIRADAKİ MODEL</div>
+            <div class="card-title" id="b-isim">-</div>
+            <div class="card-subtitle" id="b-kod">-</div>
             
             <div class="stats-grid">
                 <div class="stat-box">
@@ -84,31 +113,6 @@
             </div>
         </div>
 
-        <!-- Model A (Sıradaki Model) -->
-        <div class="card model-a">
-            <div class="badge">SIRADAKİ MODEL</div>
-            <div class="card-title">HAZIRLIK MODELİ</div>
-            <div class="card-subtitle" id="a-isim">-</div>
-            
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-label">HEDEF</div>
-                    <div class="stat-value value-hedef" id="a-hedef">0</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">KALIPLANAN</div>
-                    <div class="stat-value value-kalip" id="a-kalip">0</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">DÖKÜLEN</div>
-                    <div class="stat-value value-dokum" id="a-dokum">0</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">BOŞ / FİRE</div>
-                    <div class="stat-value value-hata" id="a-fire">0</div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="footer">
@@ -119,7 +123,6 @@
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
 
         function updateDashboard() {
-            // Önbelleği önlemek için URL'nin sonuna rastgele bir sayı ekliyoruz
             const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime();
             
             fetch(fetchUrl)
@@ -132,23 +135,12 @@
                         const now = new Date();
                         document.getElementById('last-update').innerText = now.toLocaleTimeString('tr-TR');
 
-                        // Gelen değerleri her ihtimale karşı Number'a çeviren ufak yardımcı fonksiyon
                         const getVal = (val) => parseInt(val) || 0;
 
-                        // Model B Verileri (Şu An Dökülen)
-                        if(data.modelB) {
-                            document.getElementById('b-isim').innerText = `[${data.modelB.kalipNo || '-'}] ${data.modelB.parcaAdi || '-'}`;
-                            document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
-                            document.getElementById('b-kalip').innerText = getVal(data.modelB.kaliplanan);
-                            document.getElementById('b-dokum').innerText = getVal(data.modelB.dokulen);
-                            
-                            let fireB = getVal(data.modelB.bos) + getVal(data.modelB.hataliDokum) + getVal(data.modelB.hataliKalip);
-                            document.getElementById('b-fire').innerText = fireB;
-                        }
-
-                        // Model A Verileri (Sıradaki)
+                        // Model A Verileri (Aktif / Yeşil)
                         if(data.modelA) {
-                            document.getElementById('a-isim').innerText = `[${data.modelA.kalipNo || '-'}] ${data.modelA.parcaAdi || '-'}`;
+                            document.getElementById('a-isim').innerText = `${data.modelA.parcaAdi || '-'}`;
+                            document.getElementById('a-kod').innerText = `Kalıp No: ${data.modelA.kalipNo || '-'} | Kod: ${data.modelA.parcaKodu || '-'}`;
                             document.getElementById('a-hedef').innerText = getVal(data.modelA.hedef);
                             document.getElementById('a-kalip').innerText = getVal(data.modelA.kaliplanan);
                             document.getElementById('a-dokum').innerText = getVal(data.modelA.dokulen);
@@ -156,18 +148,26 @@
                             let fireA = getVal(data.modelA.bos) + getVal(data.modelA.hataliDokum) + getVal(data.modelA.hataliKalip);
                             document.getElementById('a-fire').innerText = fireA;
                         }
+
+                        // Model B Verileri (Sıradaki / Turuncu)
+                        if(data.modelB) {
+                            document.getElementById('b-isim').innerText = `${data.modelB.parcaAdi || '-'}`;
+                            document.getElementById('b-kod').innerText = `Kalıp No: ${data.modelB.kalipNo || '-'} | Kod: ${data.modelB.parcaKodu || '-'}`;
+                            document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
+                            
+                            // Sıradaki modelin henüz başlamadığı için sayıları zorla sıfır yapılır
+                            document.getElementById('b-kalip').innerText = "0";
+                            document.getElementById('b-dokum').innerText = "0";
+                            document.getElementById('b-fire').innerText = "0";
+                        }
                     }
                 })
                 .catch(err => {
                     console.log("Veri çekme hatası:", err);
-                    document.getElementById('loading').innerText = "Veriler yüklenemedi. Lütfen internet bağlantınızı kontrol edin.";
                 });
         }
 
-        // Sayfa açıldığında çek
         updateDashboard();
-        
-        // 5 saniyede bir güncelle
         setInterval(updateDashboard, 5000);
     </script>
 </body>
