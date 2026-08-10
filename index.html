@@ -20,11 +20,9 @@
         
         .card { background-color: #1e293b; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
         
-        /* Model A (Sıradaki) - Bekleme Rengi (Sarı/Turuncu) */
         .card.model-a { border-top: 4px solid #f59e0b; }
         .card.model-a .badge { background-color: #f59e0b; color: #fff; }
         
-        /* Model B (Aktif Dökülen) - Çalışma Rengi (Yeşil) */
         .card.model-b { border-top: 4px solid #10b981; }
         .card.model-b .badge { background-color: #10b981; color: #fff; }
         
@@ -60,10 +58,10 @@
     <div id="loading" class="loading">Sisteme bağlanılıyor, veriler yükleniyor...</div>
 
     <div id="dashboard" class="grid-container">
-        <!-- Model B (Şu An Dökülen - Aktif olanı başa aldık ki göz önünde olsun) -->
+        <!-- Model B (Şu An Dökülen) -->
         <div class="card model-b">
             <div class="badge">ŞU AN DÖKÜLEN</div>
-            <div class="card-title">AKTİF MODEL B</div>
+            <div class="card-title">AKTİF MODEL</div>
             <div class="card-subtitle" id="b-isim">-</div>
             
             <div class="stats-grid">
@@ -89,7 +87,7 @@
         <!-- Model A (Sıradaki Model) -->
         <div class="card model-a">
             <div class="badge">SIRADAKİ MODEL</div>
-            <div class="card-title">HAZIRLIK MODEL A</div>
+            <div class="card-title">HAZIRLIK MODELİ</div>
             <div class="card-subtitle" id="a-isim">-</div>
             
             <div class="stats-grid">
@@ -121,7 +119,10 @@
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
 
         function updateDashboard() {
-            fetch(FIREBASE_URL)
+            // Önbelleği önlemek için URL'nin sonuna rastgele bir sayı ekliyoruz
+            const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime();
+            
+            fetch(fetchUrl)
                 .then(response => response.json())
                 .then(data => {
                     if(data) {
@@ -131,32 +132,43 @@
                         const now = new Date();
                         document.getElementById('last-update').innerText = now.toLocaleTimeString('tr-TR');
 
+                        // Gelen değerleri her ihtimale karşı Number'a çeviren ufak yardımcı fonksiyon
+                        const getVal = (val) => parseInt(val) || 0;
+
                         // Model B Verileri (Şu An Dökülen)
                         if(data.modelB) {
                             document.getElementById('b-isim').innerText = `[${data.modelB.kalipNo || '-'}] ${data.modelB.parcaAdi || '-'}`;
-                            document.getElementById('b-hedef').innerText = data.modelB.hedef || 0;
-                            document.getElementById('b-kalip').innerText = data.modelB.kaliplanan || 0;
-                            document.getElementById('b-dokum').innerText = data.modelB.dokulen || 0;
-                            let fireB = parseInt(data.modelB.bos || 0) + parseInt(data.modelB.hataliDokum || 0) + parseInt(data.modelB.hataliKalip || 0);
+                            document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
+                            document.getElementById('b-kalip').innerText = getVal(data.modelB.kaliplanan);
+                            document.getElementById('b-dokum').innerText = getVal(data.modelB.dokulen);
+                            
+                            let fireB = getVal(data.modelB.bos) + getVal(data.modelB.hataliDokum) + getVal(data.modelB.hataliKalip);
                             document.getElementById('b-fire').innerText = fireB;
                         }
 
                         // Model A Verileri (Sıradaki)
                         if(data.modelA) {
                             document.getElementById('a-isim').innerText = `[${data.modelA.kalipNo || '-'}] ${data.modelA.parcaAdi || '-'}`;
-                            document.getElementById('a-hedef').innerText = data.modelA.hedef || 0;
-                            document.getElementById('a-kalip').innerText = data.modelA.kaliplanan || 0;
-                            document.getElementById('a-dokum').innerText = data.modelA.dokulen || 0;
-                            let fireA = parseInt(data.modelA.bos || 0) + parseInt(data.modelA.hataliDokum || 0) + parseInt(data.modelA.hataliKalip || 0);
+                            document.getElementById('a-hedef').innerText = getVal(data.modelA.hedef);
+                            document.getElementById('a-kalip').innerText = getVal(data.modelA.kaliplanan);
+                            document.getElementById('a-dokum').innerText = getVal(data.modelA.dokulen);
+                            
+                            let fireA = getVal(data.modelA.bos) + getVal(data.modelA.hataliDokum) + getVal(data.modelA.hataliKalip);
                             document.getElementById('a-fire').innerText = fireA;
                         }
                     }
                 })
-                .catch(err => console.log("Veri çekme hatası:", err));
+                .catch(err => {
+                    console.log("Veri çekme hatası:", err);
+                    document.getElementById('loading').innerText = "Veriler yüklenemedi. Lütfen internet bağlantınızı kontrol edin.";
+                });
         }
 
+        // Sayfa açıldığında çek
         updateDashboard();
-        setInterval(updateDashboard, 10000);
+        
+        // 5 saniyede bir güncelle
+        setInterval(updateDashboard, 5000);
     </script>
 </body>
 </html>
