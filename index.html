@@ -37,7 +37,6 @@
         .value-kalip { color: #10b981; }
         .value-hata { color: #ef4444; }
 
-        /* Vardiya Özetleri Kısmı */
         .shift-header { color: #e2e8f0; font-size: 18px; font-weight: 800; margin: 35px 0 15px 0; letter-spacing: 1px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
         .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .shift-card { background-color: #1e293b; border-radius: 8px; padding: 18px; border-left: 4px solid #38bdf8; display: flex; flex-direction: column; justify-content: space-between;}
@@ -48,9 +47,8 @@
         .s-kalip { color: #10b981; }
         .s-fire { color: #ef4444; }
         
-        /* Model İsimlerinin Ekranda Şık Görünmesi İçin */
         .shift-models-title { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .shift-models { font-size: 12px; color: #cbd5e1; background-color: #0f172a; padding: 10px; border-radius: 6px; line-height: 1.6; }
+        .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 10px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
         
         .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #64748b; }
         .last-update { font-weight: 600; color: #94a3b8; }
@@ -69,12 +67,10 @@
 
     <div id="dashboard">
         <div class="grid-container">
-            <!-- Model A (Şu An Dökülen) -->
             <div class="card model-a">
                 <div class="badge">ŞU AN DÖKÜLEN</div>
                 <div class="card-title" id="a-isim">-</div>
                 <div class="card-subtitle" id="a-kod">-</div>
-                
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="a-hedef">0</div></div>
                     <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="a-kalip">0</div></div>
@@ -82,12 +78,10 @@
                 </div>
             </div>
 
-            <!-- Model B (Sıradaki Model) -->
             <div class="card model-b">
                 <div class="badge">SIRADAKİ MODEL</div>
                 <div class="card-title" id="b-isim">-</div>
                 <div class="card-subtitle" id="b-kod">-</div>
-                
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="b-hedef">0</div></div>
                     <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="b-kalip">0</div></div>
@@ -97,34 +91,25 @@
         </div>
 
         <h2 class="shift-header">VARDİYA ÜRETİM ÖZETİ</h2>
-        <div class="shift-grid" id="shift-container">
-            <!-- Vardiyalar Buraya JS ile Düşecek -->
-        </div>
+        <div class="shift-grid" id="shift-container"></div>
     </div>
 
-    <div class="footer">
-        Son Güncelleme: <span id="last-update" class="last-update">Bekleniyor...</span>
-    </div>
+    <div class="footer">Son Güncelleme: <span id="last-update" class="last-update">Bekleniyor...</span></div>
 
     <script>
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
 
         function updateDashboard() {
-            const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime();
-            
-            fetch(fetchUrl)
+            fetch(FIREBASE_URL + "?t=" + new Date().getTime())
                 .then(response => response.json())
                 .then(data => {
                     if(data) {
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('dashboard').style.display = 'block';
-
-                        const now = new Date();
-                        document.getElementById('last-update').innerText = now.toLocaleTimeString('tr-TR');
+                        document.getElementById('last-update').innerText = new Date().toLocaleTimeString('tr-TR');
 
                         const getVal = (val) => parseInt(val) || 0;
 
-                        // Aktif Model (Model A)
                         if(data.modelA) {
                             document.getElementById('a-isim').innerText = `${data.modelA.parcaAdi || '-'}`;
                             document.getElementById('a-kod').innerText = `Kalıp No: ${data.modelA.kalipNo || '-'} | Kod: ${data.modelA.parcaKodu || '-'}`;
@@ -133,7 +118,6 @@
                             document.getElementById('a-fire').innerText = getVal(data.modelA.fire);
                         }
 
-                        // Sıradaki Model (Model B)
                         if(data.modelB) {
                             document.getElementById('b-isim').innerText = `${data.modelB.parcaAdi || '-'}`;
                             document.getElementById('b-kod').innerText = `Kalıp No: ${data.modelB.kalipNo || '-'} | Kod: ${data.modelB.parcaKodu || '-'}`;
@@ -142,16 +126,11 @@
                             document.getElementById('b-fire').innerText = "0";
                         }
 
-                        // Vardiyaları Doldur
                         if(data.shifts && data.shifts.length > 0) {
                             let shiftHtml = "";
                             data.shifts.forEach((shift, index) => {
                                 let isCurrent = (index === 0);
                                 let title = isCurrent ? "Şu Anki Vardiya" : "Geçmiş Vardiya";
-                                
-                                // Çok uzun modeller ekranı bozmasın diye en fazla 65 karakter gösteriyoruz
-                                let models = shift.modellerMetni || "Üretim Yok";
-                                if(models.length > 65) models = models.substring(0, 65) + "...";
                                 
                                 shiftHtml += `
                                     <div class="shift-card ${isCurrent ? 'current' : ''}">
@@ -159,13 +138,14 @@
                                             <div class="shift-title">${title} (${shift.label})</div>
                                             <div class="shift-date">${shift.date}</div>
                                             <div class="shift-stats">
-                                                <span class="s-kalip">Toplam Kalıp: ${shift.toplamKalip || shift.kalip}</span>
-                                                <span class="s-fire">Toplam Fire: ${shift.toplamFire || shift.fire}</span>
+                                                <span class="s-kalip">Toplam Kalıp: ${shift.toplamKalip}</span>
+                                                <span class="s-fire">Toplam Fire: ${shift.toplamFire}</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="shift-models-title">ÜRETİLEN MODELLER</div>
-                                            <div class="shift-models">${models}</div>
+                                            <div class="shift-models-title">DETAYLI ÜRETİM (MODEL NO: KALIP | FİRE)</div>
+                                            <!-- Buradaki innerHTML satır atlamalarını (<br>) okur ve alt alta dizer -->
+                                            <div class="shift-models">${shift.modellerMetni}</div>
                                         </div>
                                     </div>
                                 `;
