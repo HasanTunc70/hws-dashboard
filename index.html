@@ -37,16 +37,16 @@
         .value-kalip { color: #10b981; }
         .value-hata { color: #ef4444; }
 
-        /* Vardiya Özetleri Kısmı */
         .shift-header { color: #e2e8f0; font-size: 18px; font-weight: 800; margin: 35px 0 15px 0; letter-spacing: 1px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
         .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .shift-card { background-color: #1e293b; border-radius: 8px; padding: 15px; border-left: 4px solid #38bdf8; }
+        .shift-card { background-color: #1e293b; border-radius: 8px; padding: 15px; border-left: 4px solid #38bdf8; display: flex; flex-direction: column; justify-content: space-between;}
         .shift-card.current { border-left-color: #10b981; background-color: #0f172a; border: 1px solid #10b981;}
         .shift-title { font-size: 14px; font-weight: 800; color: #e2e8f0; margin-bottom: 3px; }
         .shift-date { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
-        .shift-stats { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; }
+        .shift-stats { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 10px;}
         .s-kalip { color: #10b981; }
         .s-fire { color: #ef4444; }
+        .shift-models { font-size: 11px; color: #64748b; font-style: italic; border-top: 1px solid #334155; padding-top: 8px;}
         
         .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #64748b; }
         .last-update { font-weight: 600; color: #94a3b8; }
@@ -162,14 +162,21 @@
                             data.shifts.forEach((shift, index) => {
                                 let isCurrent = (index === 0);
                                 let title = isCurrent ? "Şu Anki Vardiya" : "Geçmiş Vardiya";
+                                // Eğer modeller çok uzunsa ilk 50 karakteri gösterip sonuna ... ekle (Tasarım taşmasın diye)
+                                let models = shift.modeller || "Üretim Yok";
+                                if(models.length > 60) models = models.substring(0, 60) + "...";
+                                
                                 shiftHtml += `
                                     <div class="shift-card ${isCurrent ? 'current' : ''}">
-                                        <div class="shift-title">${title} (${shift.label})</div>
-                                        <div class="shift-date">${shift.date}</div>
-                                        <div class="shift-stats">
-                                            <span class="s-kalip">Kalıp: ${shift.kalip}</span>
-                                            <span class="s-fire">Fire: ${shift.fire}</span>
+                                        <div>
+                                            <div class="shift-title">${title} (${shift.label})</div>
+                                            <div class="shift-date">${shift.date}</div>
+                                            <div class="shift-stats">
+                                                <span class="s-kalip">Kalıp: ${shift.kalip}</span>
+                                                <span class="s-fire">Fire: ${shift.fire}</span>
+                                            </div>
                                         </div>
+                                        <div class="shift-models">Üretilenler: ${models}</div>
                                     </div>
                                 `;
                             });
