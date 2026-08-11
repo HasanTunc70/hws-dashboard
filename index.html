@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HWS Dökümhane | Canlı Ekran</title>
+    <title>Erkon Döküm | HWS Canlı Ekran</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
         
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #1e293b; padding-bottom: 15px; }
-        .header h1 { color: #38bdf8; font-size: 24px; font-weight: 800; letter-spacing: 1px; }
-        .status { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: #10b981; }
-        .dot { width: 10px; height: 10px; background-color: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
+        
+        /* Erkon Logosu İçin Ayarlar */
+        .header img { height: 45px; object-fit: contain; }
+        
+        /* Canlı/Durdu Durum Belirteci */
+        .status { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 20px; transition: all 0.3s ease; }
+        .status.live { color: #10b981; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .status.offline { color: #ef4444; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+        
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .status.live .dot { background-color: #10b981; animation: pulse 1.5s infinite; }
+        .status.offline .dot { background-color: #ef4444; }
         
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
         
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
         .card { background-color: #1e293b; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
-        
-        /* Model A (Aktif) - Yeşil Tema */
         .card.model-a { border-top: 4px solid #10b981; }
         .card.model-a .badge { background-color: #10b981; color: #fff; }
-        
-        /* Model B (Sıradaki) - Turuncu Tema */
         .card.model-b { border-top: 4px solid #f59e0b; }
         .card.model-b .badge { background-color: #f59e0b; color: #fff; }
-        
-        /* Model C (Daha Sonraki) - Mavi Tema */
         .card.model-c { border-top: 4px solid #38bdf8; }
         .card.model-c .badge { background-color: #38bdf8; color: #0f172a; }
         
@@ -58,8 +61,13 @@
         .shift-models-title { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 10px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
         
-        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #64748b; }
+        .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; font-size: 12px; color: #64748b; padding-top: 15px; border-top: 1px solid #1e293b; }
         .last-update { font-weight: 600; color: #94a3b8; }
+        
+        /* Geliştirici İmzası */
+        .developer { font-style: italic; color: #475569; letter-spacing: 0.5px; }
+        .developer span { font-weight: 800; color: #38bdf8; font-style: normal;}
+        
         .loading { text-align: center; padding: 50px; font-size: 18px; color: #94a3b8; }
         #dashboard { display: none; }
     </style>
@@ -67,15 +75,20 @@
 <body>
 
     <div class="header">
-        <h1>HWS DÖKÜMHANE</h1>
-        <div class="status"><div class="dot"></div> CANLI VERİ</div>
+        <!-- Erkon Web Sitesinden Çekilen Orijinal Logo -->
+        <img src="https://www.erkondokum.com.tr/Uploads/Images/212024104958-ErkonLogoBeyaz-min.png" alt="Erkon Döküm">
+        
+        <!-- Canlı / Durdu Göstergesi -->
+        <div id="connection-status" class="status live">
+            <div class="dot"></div> <span id="status-text">CANLI VERİ</span>
+        </div>
     </div>
 
     <div id="loading" class="loading">Sisteme bağlanılıyor, veriler yükleniyor...</div>
 
     <div id="dashboard">
         <div class="grid-container">
-            <!-- Model A -->
+            <!-- Model A (Şu An Dökülen) -->
             <div class="card model-a" id="card-a" style="display:none;">
                 <div class="badge">ŞU AN DÖKÜLEN</div>
                 <div class="card-title" id="a-isim">-</div>
@@ -87,7 +100,7 @@
                 </div>
             </div>
 
-            <!-- Model B -->
+            <!-- Model B (Sıradaki Model) -->
             <div class="card model-b" id="card-b" style="display:none;">
                 <div class="badge">SIRADAKİ MODEL</div>
                 <div class="card-title" id="b-isim">-</div>
@@ -99,7 +112,7 @@
                 </div>
             </div>
             
-            <!-- Model C (Ekstra Eklendiği Zaman Görünür) -->
+            <!-- Model C (Daha Sonraki Model) -->
             <div class="card model-c" id="card-c" style="display:none;">
                 <div class="badge">DAHA SONRAKİ MODEL</div>
                 <div class="card-title" id="c-isim">-</div>
@@ -116,18 +129,49 @@
         <div class="shift-grid" id="shift-container"></div>
     </div>
 
-    <div class="footer">Son Güncelleme: <span id="last-update" class="last-update">Bekleniyor...</span></div>
+    <div class="footer">
+        <div>Son Güncelleme: <span id="last-update" class="last-update">Bekleniyor...</span></div>
+        <div class="developer">Geliştirici: <span>Hasan TUNÇ</span></div>
+    </div>
 
     <script>
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
+        let lastFirebaseDataString = ""; // Verinin değişip değişmediğini anlamak için
+        let lastDataReceiveTime = new Date().getTime(); // Son veri geliş anı
 
         function updateDashboard() {
-            fetch(FIREBASE_URL + "?t=" + new Date().getTime())
+            const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime();
+            
+            fetch(fetchUrl)
                 .then(response => response.json())
                 .then(data => {
                     if(data) {
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('dashboard').style.display = 'block';
+                        
+                        // Veri Firebase'den geldi! Şimdi verinin gerçekten "yeni" olup olmadığını kontrol edelim.
+                        let currentDataString = JSON.stringify(data);
+                        
+                        if(currentDataString !== lastFirebaseDataString) {
+                            // Fabrikadan yeni rakam veya hareket geldi!
+                            lastFirebaseDataString = currentDataString;
+                            lastDataReceiveTime = new Date().getTime(); // Saati sıfırla
+                        }
+
+                        // Eğer son 60 saniye içinde fabrikadan hiç yeni bir kalıp (veri değişikliği) gelmediyse, durdu yaz.
+                        let timeSinceLastData = new Date().getTime() - lastDataReceiveTime;
+                        let statusEl = document.getElementById('connection-status');
+                        let statusText = document.getElementById('status-text');
+
+                        if (timeSinceLastData > 60000) { // 60.000 ms = 60 saniye boyunca ayni kaldiysa
+                            statusEl.className = "status offline";
+                            statusText.innerText = "BAĞLANTI KESİLDİ / DURDU";
+                        } else {
+                            statusEl.className = "status live";
+                            statusText.innerText = "CANLI VERİ";
+                        }
+
+                        // Ekrandaki güncellemeyi yansıt
                         document.getElementById('last-update').innerText = new Date().toLocaleTimeString('tr-TR');
 
                         const getVal = (val) => parseInt(val) || 0;
@@ -146,18 +190,13 @@
                             document.getElementById('b-isim').innerText = `${data.modelB.parcaAdi || '-'}`;
                             document.getElementById('b-kod').innerText = `Kalıp No: ${data.modelB.kalipNo || '-'} | Kod: ${data.modelB.parcaKodu || '-'}`;
                             document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
-                            document.getElementById('b-kalip').innerText = "0";
-                            document.getElementById('b-fire').innerText = "0";
                         } else { document.getElementById('card-b').style.display = 'none'; }
                         
-                        // SİSTEME 3. BİR MODEL EKLENDİYSE (Model C) BÖYLECE EKRANA DÜŞER:
                         if(data.modelC) {
                             document.getElementById('card-c').style.display = 'block';
                             document.getElementById('c-isim').innerText = `${data.modelC.parcaAdi || '-'}`;
                             document.getElementById('c-kod').innerText = `Kalıp No: ${data.modelC.kalipNo || '-'} | Kod: ${data.modelC.parcaKodu || '-'}`;
                             document.getElementById('c-hedef').innerText = getVal(data.modelC.hedef);
-                            document.getElementById('c-kalip').innerText = "0";
-                            document.getElementById('c-fire').innerText = "0";
                         } else { document.getElementById('card-c').style.display = 'none'; }
 
                         if(data.shifts && data.shifts.length > 0) {
@@ -177,7 +216,8 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="shift-models-title">DETAYLI ÜRETİM (MODEL NO: KALIP | FİRE)</div>
+                                            <div class="shift-models-title">DETAYLI ÜRETİM</div>
+                                            <!-- VBScript'ten gelen "<br>" taglari sayesinde modeller burada alt alta siralanir -->
                                             <div class="shift-models">${shift.modellerMetni}</div>
                                         </div>
                                     </div>
@@ -187,11 +227,15 @@
                         }
                     }
                 })
-                .catch(err => console.log("Veri çekme hatası:", err));
+                .catch(err => {
+                    console.log("Bağlantı hatası:", err);
+                    document.getElementById('connection-status').className = "status offline";
+                    document.getElementById('status-text').innerText = "İNTERNET KOPTU";
+                });
         }
 
         updateDashboard();
-        setInterval(updateDashboard, 10000);
+        setInterval(updateDashboard, 5000); // Ekran kontrolünü hizli yapar ama yeni kalip basildiysa CANLI der.
     </script>
 </body>
 </html>
