@@ -19,10 +19,18 @@
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
         .card { background-color: #1e293b; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
+        
+        /* Model A (Aktif) - Yeşil Tema */
         .card.model-a { border-top: 4px solid #10b981; }
         .card.model-a .badge { background-color: #10b981; color: #fff; }
+        
+        /* Model B (Sıradaki) - Turuncu Tema */
         .card.model-b { border-top: 4px solid #f59e0b; }
         .card.model-b .badge { background-color: #f59e0b; color: #fff; }
+        
+        /* Model C (Daha Sonraki) - Mavi Tema */
+        .card.model-c { border-top: 4px solid #38bdf8; }
+        .card.model-c .badge { background-color: #38bdf8; color: #0f172a; }
         
         .badge { position: absolute; top: 20px; right: 20px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
         .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; }
@@ -67,7 +75,8 @@
 
     <div id="dashboard">
         <div class="grid-container">
-            <div class="card model-a">
+            <!-- Model A -->
+            <div class="card model-a" id="card-a" style="display:none;">
                 <div class="badge">ŞU AN DÖKÜLEN</div>
                 <div class="card-title" id="a-isim">-</div>
                 <div class="card-subtitle" id="a-kod">-</div>
@@ -78,7 +87,8 @@
                 </div>
             </div>
 
-            <div class="card model-b">
+            <!-- Model B -->
+            <div class="card model-b" id="card-b" style="display:none;">
                 <div class="badge">SIRADAKİ MODEL</div>
                 <div class="card-title" id="b-isim">-</div>
                 <div class="card-subtitle" id="b-kod">-</div>
@@ -86,6 +96,18 @@
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="b-hedef">0</div></div>
                     <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="b-kalip">0</div></div>
                     <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="b-fire">0</div></div>
+                </div>
+            </div>
+            
+            <!-- Model C (Ekstra Eklendiği Zaman Görünür) -->
+            <div class="card model-c" id="card-c" style="display:none;">
+                <div class="badge">DAHA SONRAKİ MODEL</div>
+                <div class="card-title" id="c-isim">-</div>
+                <div class="card-subtitle" id="c-kod">-</div>
+                <div class="stats-grid">
+                    <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="c-hedef">0</div></div>
+                    <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="c-kalip">0</div></div>
+                    <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="c-fire">0</div></div>
                 </div>
             </div>
         </div>
@@ -111,20 +133,32 @@
                         const getVal = (val) => parseInt(val) || 0;
 
                         if(data.modelA) {
+                            document.getElementById('card-a').style.display = 'block';
                             document.getElementById('a-isim').innerText = `${data.modelA.parcaAdi || '-'}`;
                             document.getElementById('a-kod').innerText = `Kalıp No: ${data.modelA.kalipNo || '-'} | Kod: ${data.modelA.parcaKodu || '-'}`;
                             document.getElementById('a-hedef').innerText = getVal(data.modelA.hedef);
                             document.getElementById('a-kalip').innerText = getVal(data.modelA.kaliplanan);
                             document.getElementById('a-fire').innerText = getVal(data.modelA.fire);
-                        }
+                        } else { document.getElementById('card-a').style.display = 'none'; }
 
                         if(data.modelB) {
+                            document.getElementById('card-b').style.display = 'block';
                             document.getElementById('b-isim').innerText = `${data.modelB.parcaAdi || '-'}`;
                             document.getElementById('b-kod').innerText = `Kalıp No: ${data.modelB.kalipNo || '-'} | Kod: ${data.modelB.parcaKodu || '-'}`;
                             document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
                             document.getElementById('b-kalip').innerText = "0";
                             document.getElementById('b-fire').innerText = "0";
-                        }
+                        } else { document.getElementById('card-b').style.display = 'none'; }
+                        
+                        // SİSTEME 3. BİR MODEL EKLENDİYSE (Model C) BÖYLECE EKRANA DÜŞER:
+                        if(data.modelC) {
+                            document.getElementById('card-c').style.display = 'block';
+                            document.getElementById('c-isim').innerText = `${data.modelC.parcaAdi || '-'}`;
+                            document.getElementById('c-kod').innerText = `Kalıp No: ${data.modelC.kalipNo || '-'} | Kod: ${data.modelC.parcaKodu || '-'}`;
+                            document.getElementById('c-hedef').innerText = getVal(data.modelC.hedef);
+                            document.getElementById('c-kalip').innerText = "0";
+                            document.getElementById('c-fire').innerText = "0";
+                        } else { document.getElementById('card-c').style.display = 'none'; }
 
                         if(data.shifts && data.shifts.length > 0) {
                             let shiftHtml = "";
@@ -144,7 +178,6 @@
                                         </div>
                                         <div>
                                             <div class="shift-models-title">DETAYLI ÜRETİM (MODEL NO: KALIP | FİRE)</div>
-                                            <!-- Buradaki innerHTML satır atlamalarını (<br>) okur ve alt alta dizer -->
                                             <div class="shift-models">${shift.modellerMetni}</div>
                                         </div>
                                     </div>
