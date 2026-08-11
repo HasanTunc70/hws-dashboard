@@ -10,7 +10,6 @@
         body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
         
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #1e293b; padding-bottom: 15px; }
-        
         .header img { height: 60px; object-fit: contain; margin-right: 15px; }
         
         .status { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 20px; transition: all 0.3s ease; }
@@ -25,24 +24,13 @@
         
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
-        /* Kartın kendisi */
         .card { background-color: #1e293b; border-radius: 12px; padding: 30px 20px 20px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
-        
-        /* Model A (Aktif) - Yeşil Tema */
         .card.model-a { border-top: 4px solid #10b981; }
         .card.model-a .badge { background-color: #10b981; color: #fff; }
-        
-        /* Model B (Sıradaki) - Turuncu Tema */
         .card.model-b { border-top: 4px solid #f59e0b; }
         .card.model-b .badge { background-color: #f59e0b; color: #fff; }
         
-        /* Model C (Daha Sonraki) - Mavi Tema */
-        .card.model-c { border-top: 4px solid #38bdf8; }
-        .card.model-c .badge { background-color: #38bdf8; color: #0f172a; }
-        
-        /* BADGE (Etiket) - Tam Sağ Üst Köşeye Şık Bir Kurdele Gibi Sıfırlandı */
         .badge { position: absolute; top: 0; right: 0; padding: 6px 14px; border-bottom-left-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
-        
         .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px;}
         .card-subtitle { font-size: 15px; color: #94a3b8; margin-bottom: 25px; }
         
@@ -55,14 +43,13 @@
         .value-kalip { color: #10b981; }
         .value-hata { color: #ef4444; }
 
-        /* Vardiya Özetleri Kısmı */
         .shift-header { color: #e2e8f0; font-size: 18px; font-weight: 800; margin: 35px 0 15px 0; letter-spacing: 1px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
         .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .shift-card { background-color: #1e293b; border-radius: 8px; padding: 18px; border-left: 4px solid #38bdf8; display: flex; flex-direction: column; justify-content: space-between;}
         .shift-card.current { border-left-color: #10b981; background-color: #0f172a; border: 1px solid #10b981;}
-        .shift-title { font-size: 15px; font-weight: 800; color: #e2e8f0; margin-bottom: 3px; }
-        .shift-date { font-size: 12px; color: #94a3b8; margin-bottom: 15px; }
-        .shift-stats { display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; margin-bottom: 15px;}
+        .shift-title { font-size: 16px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;}
+        .shift-date { font-size: 13px; color: #94a3b8; margin-bottom: 15px; font-weight: 600;}
+        .shift-stats { display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;}
         .s-kalip { color: #10b981; }
         .s-fire { color: #ef4444; }
         
@@ -82,9 +69,8 @@
 <body>
 
     <div class="header">
-        <img src="https://raw.githubusercontent.com/HasanTunc70/hws-dashboard/main/logo.png" alt="Erkon Döküm">
+        <img src="https://raw.githubusercontent.com/HasanTunc70/hws-dashboard/main/logo.png" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png'; this.parentElement.innerHTML='<h1 style=\'color:white; font-size:24px;\'>ERKON DÖKÜM</h1>';" alt="Erkon Döküm">
         
-        <!-- Canlı / Durdu Göstergesi -->
         <div id="connection-status" class="status live">
             <div class="dot"></div> <span id="status-text">CANLI VERİ</span>
         </div>
@@ -117,18 +103,6 @@
                     <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="b-fire">0</div></div>
                 </div>
             </div>
-            
-            <!-- Model C (Daha Sonraki Model) -->
-            <div class="card model-c" id="card-c" style="display:none;">
-                <div class="badge">DAHA SONRAKİ MODEL</div>
-                <div class="card-title" id="c-isim">-</div>
-                <div class="card-subtitle" id="c-kod">-</div>
-                <div class="stats-grid">
-                    <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="c-hedef">0</div></div>
-                    <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="c-kalip">0</div></div>
-                    <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="c-fire">0</div></div>
-                </div>
-            </div>
         </div>
 
         <h2 class="shift-header">VARDİYA ÜRETİM ÖZETİ</h2>
@@ -144,6 +118,44 @@
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
         let lastFirebaseDataString = ""; 
         let lastDataReceiveTime = new Date().getTime(); 
+
+        // OTOMATİK VARDİYA ROTASYONU MATEMATİĞİ
+        function getVardiyaSorumlusu(dateStr, labelStr) {
+            const parts = dateStr.split('/');
+            if(parts.length !== 3) return "Vardiya Ekibi";
+            
+            // Verilen vardiyanın takvim günü (Aylar 0 indexlidir)
+            const vDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            
+            // Referans Başlangıç Tarihi: 10 Ağustos 2026 Pazartesi
+            const refDate = new Date(2026, 7, 10); 
+            
+            // Kaç gün geçmiş?
+            const diffDays = Math.floor((vDate.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24));
+            
+            // Kaç Hafta geçmiş? (Her Pazartesi sabahı yeni hafta başlar)
+            let weekDiff = Math.floor(diffDays / 7);
+            
+            // 3 Haftalık Döngü Modülü (0, 1, 2) Negatif sayıları önlemek için +3 eklendi
+            let cycle = ((weekDiff % 3) + 3) % 3;
+            
+            // Vardiyaların Temel Index'leri (10 Ağustos 2026 Haftası Baz Alındı)
+            let baseIndex = 0;
+            if (labelStr.includes("08:00 - 16:00")) baseIndex = 1;      // TKB
+            else if (labelStr.includes("16:00 - 00:00")) baseIndex = 0; // TKA
+            else if (labelStr.includes("00:00 - 08:00")) baseIndex = 2; // TKC
+            
+            // Her hafta döngü 1 geriye (tersine) kaysın
+            let teamIndex = (baseIndex - cycle + 3) % 3;
+            
+            const teams = [
+                "TKA - Burak ÇAKIR",
+                "TKB - Melih ARSLAN",
+                "TKC - Hasan TUNÇ"
+            ];
+            
+            return teams[teamIndex];
+        }
 
         function updateDashboard() {
             const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime();
@@ -166,7 +178,7 @@
                         let statusEl = document.getElementById('connection-status');
                         let statusText = document.getElementById('status-text');
 
-                        // Eğer 90 Saniyeden uzun süre fabrikadan ses çıkmazsa, sistem durdu yazar.
+                        // 90 Saniye boyunca yeni veri gelmezse (örneğin arka plandaki VBS kapanırsa)
                         if (timeSinceLastData > 90000) { 
                             statusEl.className = "status offline";
                             statusText.innerText = "BAĞLANTI KESİLDİ / DURDU";
@@ -193,37 +205,32 @@
                             document.getElementById('b-isim').innerText = `${data.modelB.parcaAdi || '-'}`;
                             document.getElementById('b-kod').innerText = `Kalıp No: ${data.modelB.kalipNo || '-'} | Kod: ${data.modelB.parcaKodu || '-'}`;
                             document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
-                            document.getElementById('b-kalip').innerText = "0";
-                            document.getElementById('b-fire').innerText = "0";
                         } else { document.getElementById('card-b').style.display = 'none'; }
                         
-                        if(data.modelC) {
-                            document.getElementById('card-c').style.display = 'block';
-                            document.getElementById('c-isim').innerText = `${data.modelC.parcaAdi || '-'}`;
-                            document.getElementById('c-kod').innerText = `Kalıp No: ${data.modelC.kalipNo || '-'} | Kod: ${data.modelC.parcaKodu || '-'}`;
-                            document.getElementById('c-hedef').innerText = getVal(data.modelC.hedef);
-                            document.getElementById('c-kalip').innerText = "0";
-                            document.getElementById('c-fire').innerText = "0";
-                        } else { document.getElementById('card-c').style.display = 'none'; }
-
                         if(data.shifts && data.shifts.length > 0) {
                             let shiftHtml = "";
                             data.shifts.forEach((shift, index) => {
                                 let isCurrent = (index === 0);
-                                let title = isCurrent ? "Şu Anki Vardiya" : "Geçmiş Vardiya";
+                                
+                                // O vardiyanin haftasina gore dinamik hesaplanan ekip ismi!
+                                let takimSorumlusu = getVardiyaSorumlusu(shift.date, shift.label);
+                                
+                                let badgeHtml = isCurrent 
+                                    ? `<span style="background:#10b981; color:#0f172a; padding:2px 8px; border-radius:4px; font-size:10px; margin-left:10px;">AKTİF</span>`
+                                    : "";
                                 
                                 shiftHtml += `
                                     <div class="shift-card ${isCurrent ? 'current' : ''}">
                                         <div>
-                                            <div class="shift-title">${title} (${shift.label})</div>
-                                            <div class="shift-date">${shift.date}</div>
+                                            <div class="shift-title">${takimSorumlusu} ${badgeHtml}</div>
+                                            <div class="shift-date">${shift.date} &nbsp;|&nbsp; ${shift.label} Vardiyası</div>
                                             <div class="shift-stats">
                                                 <span class="s-kalip">Toplam Kalıp: ${shift.toplamKalip}</span>
                                                 <span class="s-fire">Toplam Fire: ${shift.toplamFire}</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="shift-models-title">DETAYLI ÜRETİM</div>
+                                            <div class="shift-models-title">DETAYLI ÜRETİM (MODEL NO: KALIP | FİRE)</div>
                                             <div class="shift-models">${shift.modellerMetni}</div>
                                         </div>
                                     </div>
