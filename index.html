@@ -15,18 +15,19 @@
         .status { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 20px; transition: all 0.3s ease; }
         .status.live { color: #10b981; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
         .status.offline { color: #ef4444; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+        /* Yeni: Makine Durdu (Arıza/Mola) Rengi */
+        .status.stopped { color: #f59e0b; background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
         
         .dot { width: 10px; height: 10px; border-radius: 50%; }
         .status.live .dot { background-color: #10b981; animation: pulse 1.5s infinite; }
         .status.offline .dot { background-color: #ef4444; }
+        .status.stopped .dot { background-color: #f59e0b; }
         
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* Kartların sığması için Grid yapısı */
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
-        .card { background-color: #1e293b; border-radius: 12px; padding: 30px 20px 25px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
-        
+        .card { background-color: #1e293b; border-radius: 12px; padding: 30px 20px 20px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
         .card.model-a { border-top: 4px solid #10b981; }
         .card.model-a .badge { background-color: #10b981; color: #fff; }
         .card.model-b { border-top: 4px solid #f59e0b; }
@@ -35,17 +36,15 @@
         .card.model-c .badge { background-color: #38bdf8; color: #0f172a; }
         
         .badge { position: absolute; top: 0; right: 0; padding: 6px 14px; border-bottom-left-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
-        .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-        .card-subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 25px; }
+        .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px;}
+        .card-subtitle { font-size: 15px; color: #94a3b8; margin-bottom: 25px; }
         
-        /* Aktif Model: 4 Kutu (Taşmayı önlemek için esnek yapıldı) */
-        .stats-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        /* Sıradaki Modeller: Sadece Hedef Kutusu (1 Kutu) */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         .stats-grid-1 { display: grid; grid-template-columns: 1fr; gap: 10px; }
         
-        .stat-box { background-color: #0f172a; padding: 15px 5px; border-radius: 8px; text-align: center; }
-        .stat-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
-        .stat-value { font-size: 32px; font-weight: 800; color: #f8fafc; }
+        .stat-box { background-color: #0f172a; padding: 20px 10px; border-radius: 8px; text-align: center; }
+        .stat-label { font-size: 13px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
+        .stat-value { font-size: 34px; font-weight: 800; color: #f8fafc; }
         
         .value-hedef { color: #38bdf8; }
         .value-kalip { color: #10b981; }
@@ -53,7 +52,7 @@
         .value-hata { color: #ef4444; }
 
         .shift-header { color: #e2e8f0; font-size: 18px; font-weight: 800; margin: 35px 0 15px 0; letter-spacing: 1px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
-        .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .shift-card { background-color: #1e293b; border-radius: 8px; padding: 18px; border-left: 4px solid #38bdf8; display: flex; flex-direction: column; justify-content: space-between;}
         .shift-card.current { border-left-color: #10b981; background-color: #0f172a; border: 1px solid #10b981;}
         
@@ -62,6 +61,7 @@
         
         .shift-title { font-size: 15px; font-weight: 800; color: #e2e8f0; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center;}
         .shift-date { font-size: 12px; color: #94a3b8; margin-bottom: 15px; font-weight: 600;}
+        
         .shift-stats { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;}
         .s-kalip { color: #10b981; }
         .s-dokum { color: #f59e0b; }
@@ -69,7 +69,7 @@
         .s-perf { color: #a855f7; }
         
         .shift-models-title { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 12px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
+        .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 10px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
         
         .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; font-size: 12px; color: #64748b; padding-top: 15px; border-top: 1px solid #1e293b; }
         .last-update { font-weight: 600; color: #94a3b8; }
@@ -99,7 +99,7 @@
                 <div class="badge">KALIPLANAN MODEL</div>
                 <div class="card-title" id="a-isim">-</div>
                 <div class="card-subtitle" id="a-kod">-</div>
-                <div class="stats-grid-4">
+                <div class="stats-grid">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="a-hedef">0</div></div>
                     <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="a-kalip">0</div></div>
                     <div class="stat-box"><div class="stat-label">DÖKÜLEN</div><div class="stat-value value-dokum" id="a-dokum">0</div></div>
@@ -141,8 +141,10 @@
 
     <script>
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
-        let lastFirebaseDataString = ""; 
-        let lastDataReceiveTime = new Date().getTime(); 
+        
+        let lastPingTime = 0;
+        let lastKalipCount = -1;
+        let lastKalipChangeTime = new Date().getTime(); // Kalıp en son ne zaman arttı?
 
         function getVardiyaSorumlusu(dateStr, labelStr) {
             const parts = dateStr.split('/');
@@ -165,10 +167,7 @@
 
         function hesaplaPerformans(kalipSayisi, isCurrent) {
             if(!kalipSayisi || kalipSayisi === 0) return 0;
-            
-            if(!isCurrent) {
-                return Math.round(kalipSayisi / 7.5);
-            }
+            if(!isCurrent) return Math.round(kalipSayisi / 7.5);
             
             let n = new Date();
             let h = n.getHours();
@@ -197,27 +196,51 @@
                     if(data) {
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('dashboard').style.display = 'block';
+
+                        const getVal = (val) => parseInt(val) || 0;
+                        let currentKalip = 0;
                         
-                        let currentDataString = JSON.stringify(data);
-                        if(currentDataString !== lastFirebaseDataString) {
-                            lastFirebaseDataString = currentDataString;
-                            lastDataReceiveTime = new Date().getTime(); 
+                        if(data.modelA) {
+                            currentKalip = getVal(data.modelA.kaliplanan);
                         }
 
-                        let timeSinceLastData = new Date().getTime() - lastDataReceiveTime;
+                        // BAĞLANTI (Ping) Kontrolü
+                        let currentPing = data.lastPing || 0;
+                        let isInternetConnected = false;
+                        
+                        if (currentPing !== lastPingTime) {
+                            lastPingTime = currentPing;
+                            isInternetConnected = true; // Fabrika PC'si yasiyor ve ping atiyor
+                        }
+
+                        // KALIP ARTIŞ KONTROLÜ
+                        if (currentKalip !== lastKalipCount) {
+                            lastKalipCount = currentKalip;
+                            lastKalipChangeTime = new Date().getTime();
+                        }
+                        
+                        let timeSinceKalipChange = new Date().getTime() - lastKalipChangeTime;
+                        
                         let statusEl = document.getElementById('connection-status');
                         let statusText = document.getElementById('status-text');
 
-                        if (timeSinceLastData > 90000) { 
+                        if (!isInternetConnected) {
+                            // Ping degismiyorsa program kapali veya internet gitti
                             statusEl.className = "status offline";
-                            statusText.innerText = "BAĞLANTI KESİLDİ / DURDU";
-                        } else {
+                            statusText.innerText = "BAĞLANTI KESİLDİ";
+                        } 
+                        else if (timeSinceKalipChange > 120000) { 
+                            // Internet var ama son 120 saniyedir (2 dakika) 1 tane bile kalip basilmadiysa makine durmustur
+                            statusEl.className = "status stopped";
+                            statusText.innerText = "MAKİNE DURDU (ARIZA/MOLA)";
+                        } 
+                        else {
+                            // Her sey yolunda, uretim akiyor
                             statusEl.className = "status live";
                             statusText.innerText = "CANLI VERİ";
                         }
 
                         document.getElementById('last-update').innerText = new Date().toLocaleTimeString('tr-TR');
-                        const getVal = (val) => parseInt(val) || 0;
 
                         if(data.modelA) {
                             document.getElementById('card-a').style.display = 'block';
@@ -322,8 +345,6 @@
                 })
                 .catch(err => {
                     console.log("Bağlantı hatası:", err);
-                    document.getElementById('connection-status').className = "status offline";
-                    document.getElementById('status-text').innerText = "İNTERNET KOPTU";
                 });
         }
 
