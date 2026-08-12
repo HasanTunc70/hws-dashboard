@@ -54,8 +54,8 @@
         .shift-card.record { border-left-color: #fbbf24; background-color: #0f172a; border: 1px solid #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.25); margin-top: 30px;}
         .shift-card.record .shift-title { color: #fbbf24; }
         
-        .shift-title { font-size: 16px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;}
-        .shift-date { font-size: 13px; color: #94a3b8; margin-bottom: 15px; font-weight: 600;}
+        .shift-title { font-size: 15px; font-weight: 800; color: #e2e8f0; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center;}
+        .shift-date { font-size: 12px; color: #94a3b8; margin-bottom: 15px; font-weight: 600;}
         .shift-stats { display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;}
         .s-kalip { color: #10b981; }
         .s-fire { color: #ef4444; }
@@ -86,6 +86,7 @@
 
     <div id="dashboard">
         <div class="grid-container">
+            <!-- Model A (Kalıplanan Model) -->
             <div class="card model-a" id="card-a" style="display:none;">
                 <div class="badge">KALIPLANAN MODEL</div>
                 <div class="card-title" id="a-isim">-</div>
@@ -97,6 +98,7 @@
                 </div>
             </div>
 
+            <!-- Model B (Sıradaki Model) -->
             <div class="card model-b" id="card-b" style="display:none;">
                 <div class="badge">SIRADAKİ MODEL</div>
                 <div class="card-title" id="b-isim">-</div>
@@ -108,6 +110,7 @@
                 </div>
             </div>
             
+            <!-- Model C (Daha Sonraki Model) -->
             <div class="card model-c" id="card-c" style="display:none;">
                 <div class="badge">DAHA SONRAKİ MODEL</div>
                 <div class="card-title" id="c-isim">-</div>
@@ -237,10 +240,16 @@
                             });
                             document.getElementById('shift-container').innerHTML = shiftHtml;
                         }
-                        
+
                         // REKOR KARTI BURADA ÇİZİLİR
                         if(data.rekor) {
-                            let rSorumlu = getVardiyaSorumlusu(data.rekor.date, data.rekor.label);
+                            // Eğer rekor.txt'ye manuel olarak TKC - Hasan TUNÇ vb girilmişse onu kullan, 
+                            // yoksa yeni rekorlarda otomatik formülden hesapla!
+                            let rSorumlu = data.rekor.isim;
+                            if (!rSorumlu || rSorumlu === "OTOMATIK_ISIM" || rSorumlu === "Otomatik Hesaplaniyor...") {
+                                rSorumlu = getVardiyaSorumlusu(data.rekor.date, data.rekor.label);
+                            }
+                            
                             let rHtml = `
                                 <div class="shift-card record">
                                     <div>
