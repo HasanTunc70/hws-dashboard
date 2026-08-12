@@ -36,21 +36,23 @@
         .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px;}
         .card-subtitle { font-size: 15px; color: #94a3b8; margin-bottom: 25px; }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .stat-box { background-color: #0f172a; padding: 20px 10px; border-radius: 8px; text-align: center; }
-        .stat-label { font-size: 13px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
-        .stat-value { font-size: 34px; font-weight: 800; color: #f8fafc; }
+        /* Yeni: 5 Kutu Yan Yana */
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .stat-box { background-color: #0f172a; padding: 15px 5px; border-radius: 8px; text-align: center; }
+        .stat-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
+        .stat-value { font-size: 28px; font-weight: 800; color: #f8fafc; }
         
         .value-hedef { color: #38bdf8; }
         .value-kalip { color: #10b981; }
+        .value-dokum { color: #f59e0b; }
         .value-hata { color: #ef4444; }
+        .value-perf { color: #a855f7; }
 
         .shift-header { color: #e2e8f0; font-size: 18px; font-weight: 800; margin: 35px 0 15px 0; letter-spacing: 1px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
         .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .shift-card { background-color: #1e293b; border-radius: 8px; padding: 18px; border-left: 4px solid #38bdf8; display: flex; flex-direction: column; justify-content: space-between;}
         .shift-card.current { border-left-color: #10b981; background-color: #0f172a; border: 1px solid #10b981;}
         
-        /* Şampiyon Rekor Kartı Özel Tasarımı */
         .shift-card.record { border-left-color: #fbbf24; background-color: #0f172a; border: 1px solid #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.25); margin-top: 30px;}
         .shift-card.record .shift-title { color: #fbbf24; }
         
@@ -76,7 +78,6 @@
 
     <div class="header">
         <img src="https://raw.githubusercontent.com/HasanTunc70/hws-dashboard/main/logo.png" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png'; this.parentElement.innerHTML='<h1 style=\'color:white; font-size:24px;\'>ERKON DÖKÜM</h1>';" alt="Erkon Döküm">
-        
         <div id="connection-status" class="status live">
             <div class="dot"></div> <span id="status-text">CANLI VERİ</span>
         </div>
@@ -93,8 +94,10 @@
                 <div class="card-subtitle" id="a-kod">-</div>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="a-hedef">0</div></div>
-                    <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="a-kalip">0</div></div>
+                    <div class="stat-box"><div class="stat-label">KALIP</div><div class="stat-value value-kalip" id="a-kalip">0</div></div>
+                    <div class="stat-box"><div class="stat-label">DÖKÜM</div><div class="stat-value value-dokum" id="a-dokum">0</div></div>
                     <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="a-fire">0</div></div>
+                    <div class="stat-box"><div class="stat-label">K/SAAT</div><div class="stat-value value-perf" id="a-perf">0</div></div>
                 </div>
             </div>
 
@@ -105,8 +108,10 @@
                 <div class="card-subtitle" id="b-kod">-</div>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="b-hedef">0</div></div>
-                    <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="b-kalip">0</div></div>
+                    <div class="stat-box"><div class="stat-label">KALIP</div><div class="stat-value value-kalip" id="b-kalip">0</div></div>
+                    <div class="stat-box"><div class="stat-label">DÖKÜM</div><div class="stat-value value-dokum" id="b-dokum">0</div></div>
                     <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="b-fire">0</div></div>
+                    <div class="stat-box"><div class="stat-label">K/SAAT</div><div class="stat-value value-perf" id="b-perf">0</div></div>
                 </div>
             </div>
             
@@ -117,8 +122,10 @@
                 <div class="card-subtitle" id="c-kod">-</div>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="c-hedef">0</div></div>
-                    <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="c-kalip">0</div></div>
+                    <div class="stat-box"><div class="stat-label">KALIP</div><div class="stat-value value-kalip" id="c-kalip">0</div></div>
+                    <div class="stat-box"><div class="stat-label">DÖKÜM</div><div class="stat-value value-dokum" id="c-dokum">0</div></div>
                     <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="c-fire">0</div></div>
+                    <div class="stat-box"><div class="stat-label">K/SAAT</div><div class="stat-value value-perf" id="c-perf">0</div></div>
                 </div>
             </div>
         </div>
@@ -126,7 +133,6 @@
         <h2 class="shift-header">VARDİYA ÜRETİM ÖZETİ</h2>
         <div class="shift-grid" id="shift-container"></div>
         
-        <!-- Rekor Buraya Düşecek -->
         <div id="record-container"></div>
     </div>
 
@@ -159,6 +165,32 @@
             return teams[teamIndex];
         }
 
+        // Anlık Kalıp Performansını (Kalıp/Saat) 7.5 saat (450 Dk) üzerinden hesaplar
+        function hesaplaPerformans(kalipSayisi) {
+            if(!kalipSayisi || kalipSayisi === 0) return 0;
+            
+            let n = new Date();
+            let h = n.getHours();
+            
+            let startH = 0;
+            if (h >= 0 && h < 8) startH = 0;
+            else if (h >= 8 && h < 16) startH = 8;
+            else startH = 16;
+            
+            let shiftStart = new Date(n.getFullYear(), n.getMonth(), n.getDate(), startH, 0, 0);
+            
+            // Vardiya baslayali kac dakika oldu?
+            let elapsedMins = (n - shiftStart) / 60000;
+            if (elapsedMins < 1) elapsedMins = 1; // Sifira bolme hatasini onle
+            
+            // Mola cikarilmis "Efektif Calisma Dakikasi" (480 dakikalik vardiyada 450 dk calisma)
+            let effectiveMins = elapsedMins * (450 / 480);
+            
+            // Ornegin 120 dakikada 60 kalip bastiysa: (60 / 120) * 60 = Saatte 30 Kalip
+            let perf = Math.round((kalipSayisi / effectiveMins) * 60);
+            return perf;
+        }
+
         function updateDashboard() {
             const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime();
             
@@ -188,7 +220,6 @@
                         }
 
                         document.getElementById('last-update').innerText = new Date().toLocaleTimeString('tr-TR');
-
                         const getVal = (val) => parseInt(val) || 0;
 
                         if(data.modelA) {
@@ -196,8 +227,12 @@
                             document.getElementById('a-isim').innerText = `${data.modelA.parcaAdi || '-'}`;
                             document.getElementById('a-kod').innerText = `Kalıp No: ${data.modelA.kalipNo || '-'} | Kod: ${data.modelA.parcaKodu || '-'}`;
                             document.getElementById('a-hedef').innerText = getVal(data.modelA.hedef);
-                            document.getElementById('a-kalip').innerText = getVal(data.modelA.kaliplanan);
+                            
+                            let aKalip = getVal(data.modelA.kaliplanan);
+                            document.getElementById('a-kalip').innerText = aKalip;
+                            document.getElementById('a-dokum').innerText = getVal(data.modelA.dokulen);
                             document.getElementById('a-fire').innerText = getVal(data.modelA.fire);
+                            document.getElementById('a-perf').innerText = hesaplaPerformans(aKalip);
                         } else { document.getElementById('card-a').style.display = 'none'; }
 
                         if(data.modelB) {
@@ -205,6 +240,10 @@
                             document.getElementById('b-isim').innerText = `${data.modelB.parcaAdi || '-'}`;
                             document.getElementById('b-kod').innerText = `Kalıp No: ${data.modelB.kalipNo || '-'} | Kod: ${data.modelB.parcaKodu || '-'}`;
                             document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
+                            document.getElementById('b-kalip').innerText = "0";
+                            document.getElementById('b-dokum').innerText = "0";
+                            document.getElementById('b-fire').innerText = "0";
+                            document.getElementById('b-perf').innerText = "0";
                         } else { document.getElementById('card-b').style.display = 'none'; }
                         
                         if(data.modelC) {
@@ -212,6 +251,10 @@
                             document.getElementById('c-isim').innerText = `${data.modelC.parcaAdi || '-'}`;
                             document.getElementById('c-kod').innerText = `Kalıp No: ${data.modelC.kalipNo || '-'} | Kod: ${data.modelC.parcaKodu || '-'}`;
                             document.getElementById('c-hedef').innerText = getVal(data.modelC.hedef);
+                            document.getElementById('c-kalip').innerText = "0";
+                            document.getElementById('c-dokum').innerText = "0";
+                            document.getElementById('c-fire').innerText = "0";
+                            document.getElementById('c-perf').innerText = "0";
                         } else { document.getElementById('card-c').style.display = 'none'; }
 
                         if(data.shifts && data.shifts.length > 0) {
@@ -232,7 +275,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="shift-models-title">DETAYLI ÜRETİM (MODEL NO &rarr; KALIP | FİRE)</div>
+                                            <div class="shift-models-title">DETAYLI ÜRETİM</div>
                                             <div class="shift-models">${shift.modellerMetni}</div>
                                         </div>
                                     </div>
@@ -241,10 +284,7 @@
                             document.getElementById('shift-container').innerHTML = shiftHtml;
                         }
 
-                        // REKOR KARTI BURADA ÇİZİLİR
                         if(data.rekor) {
-                            // Eğer rekor.txt'ye manuel olarak TKC - Hasan TUNÇ vb girilmişse onu kullan, 
-                            // yoksa yeni rekorlarda otomatik formülden hesapla!
                             let rSorumlu = data.rekor.isim;
                             if (!rSorumlu || rSorumlu === "OTOMATIK_ISIM" || rSorumlu === "Otomatik Hesaplaniyor...") {
                                 rSorumlu = getVardiyaSorumlusu(data.rekor.date, data.rekor.label);
@@ -261,7 +301,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="shift-models-title" style="color:#fbbf24;">DETAYLI ÜRETİM (MODEL NO &rarr; KALIP | FİRE)</div>
+                                        <div class="shift-models-title" style="color:#fbbf24;">DETAYLI ÜRETİM</div>
                                         <div class="shift-models">${data.rekor.modellerMetni}</div>
                                     </div>
                                 </div>
