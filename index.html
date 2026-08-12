@@ -15,7 +15,6 @@
         .status { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 20px; transition: all 0.3s ease; }
         .status.live { color: #10b981; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
         .status.offline { color: #ef4444; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
-        /* Yeni: Makine Durdu (Arıza/Mola) Rengi */
         .status.stopped { color: #f59e0b; background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
         
         .dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -36,15 +35,15 @@
         .card.model-c .badge { background-color: #38bdf8; color: #0f172a; }
         
         .badge { position: absolute; top: 0; right: 0; padding: 6px 14px; border-bottom-left-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
-        .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px;}
+        .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         .card-subtitle { font-size: 15px; color: #94a3b8; margin-bottom: 25px; }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .stats-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .stats-grid-1 { display: grid; grid-template-columns: 1fr; gap: 10px; }
         
-        .stat-box { background-color: #0f172a; padding: 20px 10px; border-radius: 8px; text-align: center; }
-        .stat-label { font-size: 13px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
-        .stat-value { font-size: 34px; font-weight: 800; color: #f8fafc; }
+        .stat-box { background-color: #0f172a; padding: 15px 5px; border-radius: 8px; text-align: center; }
+        .stat-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
+        .stat-value { font-size: 32px; font-weight: 800; color: #f8fafc; }
         
         .value-hedef { color: #38bdf8; }
         .value-kalip { color: #10b981; }
@@ -61,7 +60,6 @@
         
         .shift-title { font-size: 15px; font-weight: 800; color: #e2e8f0; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center;}
         .shift-date { font-size: 12px; color: #94a3b8; margin-bottom: 15px; font-weight: 600;}
-        
         .shift-stats { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;}
         .s-kalip { color: #10b981; }
         .s-dokum { color: #f59e0b; }
@@ -69,7 +67,7 @@
         .s-perf { color: #a855f7; }
         
         .shift-models-title { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 10px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
+        .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 12px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
         
         .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; font-size: 12px; color: #64748b; padding-top: 15px; border-top: 1px solid #1e293b; }
         .last-update { font-weight: 600; color: #94a3b8; }
@@ -84,7 +82,6 @@
 
     <div class="header">
         <img src="https://raw.githubusercontent.com/HasanTunc70/hws-dashboard/main/logo.png" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png'; this.parentElement.innerHTML='<h1 style=\'color:white; font-size:24px;\'>ERKON DÖKÜM</h1>';" alt="Erkon Döküm">
-        
         <div id="connection-status" class="status live">
             <div class="dot"></div> <span id="status-text">CANLI VERİ</span>
         </div>
@@ -94,12 +91,11 @@
 
     <div id="dashboard">
         <div class="grid-container">
-            <!-- Model A (Kalıplanan Model) -->
             <div class="card model-a" id="card-a" style="display:none;">
                 <div class="badge">KALIPLANAN MODEL</div>
                 <div class="card-title" id="a-isim">-</div>
                 <div class="card-subtitle" id="a-kod">-</div>
-                <div class="stats-grid">
+                <div class="stats-grid-4">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="a-hedef">0</div></div>
                     <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="a-kalip">0</div></div>
                     <div class="stat-box"><div class="stat-label">DÖKÜLEN</div><div class="stat-value value-dokum" id="a-dokum">0</div></div>
@@ -107,7 +103,6 @@
                 </div>
             </div>
 
-            <!-- Model B (Sıradaki Model) -->
             <div class="card model-b" id="card-b" style="display:none;">
                 <div class="badge">SIRADAKİ MODEL</div>
                 <div class="card-title" id="b-isim">-</div>
@@ -117,7 +112,6 @@
                 </div>
             </div>
             
-            <!-- Model C (Daha Sonraki Model) -->
             <div class="card model-c" id="card-c" style="display:none;">
                 <div class="badge">DAHA SONRAKİ MODEL</div>
                 <div class="card-title" id="c-isim">-</div>
@@ -130,7 +124,6 @@
 
         <h2 class="shift-header">VARDİYA ÜRETİM ÖZETİ</h2>
         <div class="shift-grid" id="shift-container"></div>
-        
         <div id="record-container"></div>
     </div>
 
@@ -142,9 +135,9 @@
     <script>
         const FIREBASE_URL = "https://hws-dokumhane2-default-rtdb.firebaseio.com/canli.json";
         
-        let lastPingTime = 0;
+        let lastSuccessfulFetch = new Date().getTime(); 
         let lastKalipCount = -1;
-        let lastKalipChangeTime = new Date().getTime(); // Kalıp en son ne zaman arttı?
+        let lastKalipChangeTime = new Date().getTime();
 
         function getVardiyaSorumlusu(dateStr, labelStr) {
             const parts = dateStr.split('/');
@@ -171,92 +164,73 @@
             
             let n = new Date();
             let h = n.getHours();
-            
             let startH = 0;
             if (h >= 0 && h < 8) startH = 0;
             else if (h >= 8 && h < 16) startH = 8;
             else startH = 16;
             
             let shiftStart = new Date(n.getFullYear(), n.getMonth(), n.getDate(), startH, 0, 0);
-            
             let elapsedMins = (n - shiftStart) / 60000;
             if (elapsedMins < 1) elapsedMins = 1;
             
             let effectiveMins = elapsedMins * (450 / 480);
-            let perf = Math.round((kalipSayisi / effectiveMins) * 60);
-            return perf;
+            return Math.round((kalipSayisi / effectiveMins) * 60);
         }
 
         function updateDashboard() {
-            const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime();
+            const fetchUrl = FIREBASE_URL + "?t=" + new Date().getTime(); // Onbellegi kirar
             
             fetch(fetchUrl)
-                .then(response => response.json())
+                .then(response => {
+                    if(!response.ok) throw new Error("Network Error");
+                    return response.json();
+                })
                 .then(data => {
                     if(data) {
+                        // Veri Firebase'den saglikli geldi! İnternet/Sunucu baglantimiz basarili.
+                        lastSuccessfulFetch = new Date().getTime();
+                        
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('dashboard').style.display = 'block';
+                        document.getElementById('last-update').innerText = new Date().toLocaleTimeString('tr-TR');
 
                         const getVal = (val) => parseInt(val) || 0;
                         let currentKalip = 0;
-                        
+
                         if(data.modelA) {
                             currentKalip = getVal(data.modelA.kaliplanan);
-                        }
-
-                        // BAĞLANTI (Ping) Kontrolü
-                        let currentPing = data.lastPing || 0;
-                        let isInternetConnected = false;
-                        
-                        if (currentPing !== lastPingTime) {
-                            lastPingTime = currentPing;
-                            isInternetConnected = true; // Fabrika PC'si yasiyor ve ping atiyor
-                        }
-
-                        // KALIP ARTIŞ KONTROLÜ
-                        if (currentKalip !== lastKalipCount) {
-                            lastKalipCount = currentKalip;
-                            lastKalipChangeTime = new Date().getTime();
-                        }
-                        
-                        let timeSinceKalipChange = new Date().getTime() - lastKalipChangeTime;
-                        
-                        let statusEl = document.getElementById('connection-status');
-                        let statusText = document.getElementById('status-text');
-
-                        if (!isInternetConnected) {
-                            // Ping degismiyorsa program kapali veya internet gitti
-                            statusEl.className = "status offline";
-                            statusText.innerText = "BAĞLANTI KESİLDİ";
-                        } 
-                        else if (timeSinceKalipChange > 120000) { 
-                            // Internet var ama son 120 saniyedir (2 dakika) 1 tane bile kalip basilmadiysa makine durmustur
-                            statusEl.className = "status stopped";
-                            statusText.innerText = "MAKİNE DURDU (ARIZA/MOLA)";
-                        } 
-                        else {
-                            // Her sey yolunda, uretim akiyor
-                            statusEl.className = "status live";
-                            statusText.innerText = "CANLI VERİ";
-                        }
-
-                        document.getElementById('last-update').innerText = new Date().toLocaleTimeString('tr-TR');
-
-                        if(data.modelA) {
                             document.getElementById('card-a').style.display = 'block';
                             document.getElementById('a-isim').innerText = `${data.modelA.parcaAdi || '-'}`;
                             document.getElementById('a-kod').innerText = `Kalıp No: ${data.modelA.kalipNo || '-'} | Kod: ${data.modelA.parcaKodu || '-'}`;
                             document.getElementById('a-hedef').innerText = getVal(data.modelA.hedef);
                             
-                            let aKalip = getVal(data.modelA.kaliplanan);
                             let aFire = getVal(data.modelA.fire);
-                            let aDokum = aKalip - aFire;
+                            let aDokum = currentKalip - aFire;
                             if(aDokum < 0) aDokum = 0;
                             
-                            document.getElementById('a-kalip').innerText = aKalip;
+                            document.getElementById('a-kalip').innerText = currentKalip;
                             document.getElementById('a-fire').innerText = aFire;
                             document.getElementById('a-dokum').innerText = aDokum;
                         } else { document.getElementById('card-a').style.display = 'none'; }
+
+                        // Makine Kalıp Basıyor Mu Kontrolü (Arıza tespiti)
+                        if (currentKalip !== lastKalipCount) {
+                            lastKalipCount = currentKalip;
+                            lastKalipChangeTime = new Date().getTime(); // Kalıp artti, saati sifirla!
+                        }
+                        
+                        let statusEl = document.getElementById('connection-status');
+                        let statusText = document.getElementById('status-text');
+                        let timeSinceKalipChange = new Date().getTime() - lastKalipChangeTime;
+
+                        // Eger 3 dakika (180.000 ms) boyunca 1 tane bile kalip basilmazsa Makine Durdu (Ariza/Mola) yazar.
+                        if (timeSinceKalipChange > 180000) { 
+                            statusEl.className = "status stopped";
+                            statusText.innerText = "MAKİNE DURDU (MOLA / ARIZA)";
+                        } else {
+                            statusEl.className = "status live";
+                            statusText.innerText = "CANLI VERİ";
+                        }
 
                         if(data.modelB) {
                             document.getElementById('card-b').style.display = 'block';
@@ -292,9 +266,9 @@
                                             <div class="shift-title">${takimSorumlusu} ${badgeHtml}</div>
                                             <div class="shift-date">${shift.date} &nbsp;|&nbsp; ${shift.label} Vardiyası</div>
                                             <div class="shift-stats">
-                                                <span class="s-kalip">Kalıp: ${vKalip}</span>
-                                                <span class="s-dokum">Döküm: ${vDokum}</span>
-                                                <span class="s-fire">Fire: ${vFire}</span>
+                                                <span class="s-kalip">K: ${vKalip}</span>
+                                                <span class="s-dokum">D: ${vDokum}</span>
+                                                <span class="s-fire">F: ${vFire}</span>
                                                 <span class="s-perf">K/Saat: ${vPerf}</span>
                                             </div>
                                         </div>
@@ -318,7 +292,6 @@
                             let rFire = getVal(data.rekor.fire);
                             let rDokum = rKalip - rFire;
                             if(rDokum < 0) rDokum = 0;
-                            
                             let rPerf = hesaplaPerformans(rKalip, false); 
                             
                             let rHtml = `
@@ -327,9 +300,9 @@
                                         <div class="shift-title">🏆 REKOR YAPAN VARDİYA (${rSorumlu})</div>
                                         <div class="shift-date">${data.rekor.date} &nbsp;|&nbsp; ${data.rekor.label} Vardiyası</div>
                                         <div class="shift-stats">
-                                            <span style="color:#fbbf24;">Kalıp: ${rKalip}</span>
-                                            <span style="color:#f59e0b;">Döküm: ${rDokum}</span>
-                                            <span class="s-fire">Fire: ${rFire}</span>
+                                            <span style="color:#fbbf24;">K: ${rKalip}</span>
+                                            <span style="color:#f59e0b;">D: ${rDokum}</span>
+                                            <span class="s-fire">F: ${rFire}</span>
                                             <span class="s-perf">K/Saat: ${rPerf}</span>
                                         </div>
                                     </div>
@@ -344,7 +317,12 @@
                     }
                 })
                 .catch(err => {
-                    console.log("Bağlantı hatası:", err);
+                    // SADECE Gerçek bir İnternet Kopması durumunda Kırmızı yanar!
+                    let timeSinceLastFetch = new Date().getTime() - lastSuccessfulFetch;
+                    if (timeSinceLastFetch > 10000) {
+                        document.getElementById('connection-status').className = "status offline";
+                        document.getElementById('status-text').innerText = "İNTERNET KOPTU / OFFLINE";
+                    }
                 });
         }
 
