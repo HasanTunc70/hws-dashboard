@@ -22,9 +22,11 @@
         
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
         
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        /* Kartların sığması için Grid yapısı */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
         
-        .card { background-color: #1e293b; border-radius: 12px; padding: 30px 20px 20px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
+        .card { background-color: #1e293b; border-radius: 12px; padding: 30px 20px 25px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
+        
         .card.model-a { border-top: 4px solid #10b981; }
         .card.model-a .badge { background-color: #10b981; color: #fff; }
         .card.model-b { border-top: 4px solid #f59e0b; }
@@ -33,14 +35,17 @@
         .card.model-c .badge { background-color: #38bdf8; color: #0f172a; }
         
         .badge { position: absolute; top: 0; right: 0; padding: 6px 14px; border-bottom-left-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
-        .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px;}
-        .card-subtitle { font-size: 15px; color: #94a3b8; margin-bottom: 25px; }
+        .card-title { font-size: 22px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .card-subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 25px; }
         
-        /* Kartlarda Sadece 4 Kutu (K/Saat kaldırıldı) */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .stat-box { background-color: #0f172a; padding: 20px 10px; border-radius: 8px; text-align: center; }
-        .stat-label { font-size: 13px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
-        .stat-value { font-size: 34px; font-weight: 800; color: #f8fafc; }
+        /* Aktif Model: 4 Kutu (Taşmayı önlemek için esnek yapıldı) */
+        .stats-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        /* Sıradaki Modeller: Sadece Hedef Kutusu (1 Kutu) */
+        .stats-grid-1 { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        
+        .stat-box { background-color: #0f172a; padding: 15px 5px; border-radius: 8px; text-align: center; }
+        .stat-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;}
+        .stat-value { font-size: 32px; font-weight: 800; color: #f8fafc; }
         
         .value-hedef { color: #38bdf8; }
         .value-kalip { color: #10b981; }
@@ -48,7 +53,7 @@
         .value-hata { color: #ef4444; }
 
         .shift-header { color: #e2e8f0; font-size: 18px; font-weight: 800; margin: 35px 0 15px 0; letter-spacing: 1px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
-        .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
         .shift-card { background-color: #1e293b; border-radius: 8px; padding: 18px; border-left: 4px solid #38bdf8; display: flex; flex-direction: column; justify-content: space-between;}
         .shift-card.current { border-left-color: #10b981; background-color: #0f172a; border: 1px solid #10b981;}
         
@@ -57,8 +62,6 @@
         
         .shift-title { font-size: 15px; font-weight: 800; color: #e2e8f0; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center;}
         .shift-date { font-size: 12px; color: #94a3b8; margin-bottom: 15px; font-weight: 600;}
-        
-        /* Vardiya içindeki veriler (4'lü oldu: Kalıp, Döküm, Fire, K/Saat) */
         .shift-stats { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;}
         .s-kalip { color: #10b981; }
         .s-dokum { color: #f59e0b; }
@@ -66,7 +69,7 @@
         .s-perf { color: #a855f7; }
         
         .shift-models-title { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 10px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
+        .shift-models { font-size: 13px; color: #cbd5e1; background-color: #0f172a; padding: 12px; border-radius: 6px; line-height: 1.8; font-weight: 600; }
         
         .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; font-size: 12px; color: #64748b; padding-top: 15px; border-top: 1px solid #1e293b; }
         .last-update { font-weight: 600; color: #94a3b8; }
@@ -96,7 +99,7 @@
                 <div class="badge">KALIPLANAN MODEL</div>
                 <div class="card-title" id="a-isim">-</div>
                 <div class="card-subtitle" id="a-kod">-</div>
-                <div class="stats-grid">
+                <div class="stats-grid-4">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="a-hedef">0</div></div>
                     <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="a-kalip">0</div></div>
                     <div class="stat-box"><div class="stat-label">DÖKÜLEN</div><div class="stat-value value-dokum" id="a-dokum">0</div></div>
@@ -109,11 +112,8 @@
                 <div class="badge">SIRADAKİ MODEL</div>
                 <div class="card-title" id="b-isim">-</div>
                 <div class="card-subtitle" id="b-kod">-</div>
-                <div class="stats-grid">
+                <div class="stats-grid-1">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="b-hedef">0</div></div>
-                    <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="b-kalip">0</div></div>
-                    <div class="stat-box"><div class="stat-label">DÖKÜLEN</div><div class="stat-value value-dokum" id="b-dokum">0</div></div>
-                    <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="b-fire">0</div></div>
                 </div>
             </div>
             
@@ -122,11 +122,8 @@
                 <div class="badge">DAHA SONRAKİ MODEL</div>
                 <div class="card-title" id="c-isim">-</div>
                 <div class="card-subtitle" id="c-kod">-</div>
-                <div class="stats-grid">
+                <div class="stats-grid-1">
                     <div class="stat-box"><div class="stat-label">HEDEF</div><div class="stat-value value-hedef" id="c-hedef">0</div></div>
-                    <div class="stat-box"><div class="stat-label">KALIPLANAN</div><div class="stat-value value-kalip" id="c-kalip">0</div></div>
-                    <div class="stat-box"><div class="stat-label">DÖKÜLEN</div><div class="stat-value value-dokum" id="c-dokum">0</div></div>
-                    <div class="stat-box"><div class="stat-label">FİRE</div><div class="stat-value value-hata" id="c-fire">0</div></div>
                 </div>
             </div>
         </div>
@@ -166,12 +163,10 @@
             return teams[teamIndex];
         }
 
-        // Anlık veya Geçmiş Performansı (K/Saat) hesaplar
         function hesaplaPerformans(kalipSayisi, isCurrent) {
             if(!kalipSayisi || kalipSayisi === 0) return 0;
             
             if(!isCurrent) {
-                // Geçmiş vardiya molalar çıkınca 450 dakika (7.5 Saat) çalışır
                 return Math.round(kalipSayisi / 7.5);
             }
             
@@ -188,7 +183,6 @@
             let elapsedMins = (n - shiftStart) / 60000;
             if (elapsedMins < 1) elapsedMins = 1;
             
-            // Efektif çalışma süresi (Mola Oranı = 450/480)
             let effectiveMins = elapsedMins * (450 / 480);
             let perf = Math.round((kalipSayisi / effectiveMins) * 60);
             return perf;
@@ -225,7 +219,6 @@
                         document.getElementById('last-update').innerText = new Date().toLocaleTimeString('tr-TR');
                         const getVal = (val) => parseInt(val) || 0;
 
-                        // Modellerde Dökülen = Kalıplanan - Fire olarak hesaplanıyor
                         if(data.modelA) {
                             document.getElementById('card-a').style.display = 'block';
                             document.getElementById('a-isim').innerText = `${data.modelA.parcaAdi || '-'}`;
@@ -247,9 +240,6 @@
                             document.getElementById('b-isim').innerText = `${data.modelB.parcaAdi || '-'}`;
                             document.getElementById('b-kod').innerText = `Kalıp No: ${data.modelB.kalipNo || '-'} | Kod: ${data.modelB.parcaKodu || '-'}`;
                             document.getElementById('b-hedef').innerText = getVal(data.modelB.hedef);
-                            document.getElementById('b-kalip').innerText = "0";
-                            document.getElementById('b-fire').innerText = "0";
-                            document.getElementById('b-dokum').innerText = "0";
                         } else { document.getElementById('card-b').style.display = 'none'; }
                         
                         if(data.modelC) {
@@ -257,9 +247,6 @@
                             document.getElementById('c-isim').innerText = `${data.modelC.parcaAdi || '-'}`;
                             document.getElementById('c-kod').innerText = `Kalıp No: ${data.modelC.kalipNo || '-'} | Kod: ${data.modelC.parcaKodu || '-'}`;
                             document.getElementById('c-hedef').innerText = getVal(data.modelC.hedef);
-                            document.getElementById('c-kalip').innerText = "0";
-                            document.getElementById('c-fire').innerText = "0";
-                            document.getElementById('c-dokum').innerText = "0";
                         } else { document.getElementById('card-c').style.display = 'none'; }
 
                         if(data.shifts && data.shifts.length > 0) {
@@ -269,7 +256,6 @@
                                 let takimSorumlusu = getVardiyaSorumlusu(shift.date, shift.label);
                                 let badgeHtml = isCurrent ? `<span style="background:#10b981; color:#0f172a; padding:2px 8px; border-radius:4px; font-size:10px; margin-left:10px;">AKTİF</span>` : "";
                                 
-                                // Vardiya bazında Dökülen = Kalıp - Fire
                                 let vKalip = getVal(shift.toplamKalip);
                                 let vFire = getVal(shift.toplamFire);
                                 let vDokum = vKalip - vFire;
@@ -310,7 +296,7 @@
                             let rDokum = rKalip - rFire;
                             if(rDokum < 0) rDokum = 0;
                             
-                            let rPerf = hesaplaPerformans(rKalip, false); // Rekor hep geçmiş sayılır
+                            let rPerf = hesaplaPerformans(rKalip, false); 
                             
                             let rHtml = `
                                 <div class="shift-card record">
@@ -336,6 +322,8 @@
                 })
                 .catch(err => {
                     console.log("Bağlantı hatası:", err);
+                    document.getElementById('connection-status').className = "status offline";
+                    document.getElementById('status-text').innerText = "İNTERNET KOPTU";
                 });
         }
 
